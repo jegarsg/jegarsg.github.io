@@ -8,18 +8,12 @@ import {
   FaGraduationCap,
   FaGithub,
   FaLinkedin,
-  FaNodeJs,
-  FaAtlassian,
-  FaBitbucket,
   FaAws,
-  FaJava,
   FaUser,
   FaTools,
-  FaProjectDiagram,
   FaEnvelope,
   FaMapMarkerAlt,
   FaPhone,
-    FaTwitter,
 } from 'react-icons/fa'
 import {
   SiDotnet,
@@ -35,25 +29,21 @@ import {
   SiJenkins,
   SiGithubactions,
   SiElastic,
-  SiGithub,
   SiJavascript,
   SiNestjs,
   SiAngular,
   SiNextdotjs,
   SiNodedotjs,
-  SiSqlalchemy,
   SiSqlite,
-  SiJirasoftware,
   SiJira,
   SiBitbucket,
   SiGin,
   SiSharp,
   SiJetbrains,
-  SiTailwindcss,
   SiSpringboot,
 } from 'react-icons/si'
 import DarkModeToggle from './components/DarkModeToggle'
-import { RiAngularjsFill, RiJavaFill } from 'react-icons/ri'
+import { RiJavaFill } from 'react-icons/ri'
 import { DiVisualstudio } from 'react-icons/di'
 import { VscAzureDevops, VscCode } from 'react-icons/vsc'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -81,31 +71,10 @@ export default function Home() {
       transition: { type: 'spring', stiffness: 100, damping: 15 },
     },
   }
-  const itemVariants2 = {
-    hidden: { opacity: 0, scale: 0.8 },
-    show: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 120,
-        damping: 14,
-      },
-    },
-  }
-  const containerVariants2 = {
-    hidden: {},
-    show: {
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  }
 
-  const { ref, inView } = useInView({
-    triggerOnce: false, // So it re-triggers
-    threshold: 0.1,
-  })
+
+
+
 
   const buttonVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -542,7 +511,7 @@ export default function Home() {
         </div>
       </section>
             
-   <section className="max-w-3xl mx-auto px-6 py-16">
+   <section id="contact" className="max-w-3xl mx-auto px-6 py-16">
       <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
         Contact Info
       </h2>
