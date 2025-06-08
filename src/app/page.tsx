@@ -72,10 +72,6 @@ export default function Home() {
     },
   }
 
-
-
-
-
   const buttonVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -276,7 +272,7 @@ export default function Home() {
                       Skills
                     </a>
                   </li>
-                  
+
                   <li>
                     <a
                       href="#contact"
@@ -510,70 +506,69 @@ export default function Home() {
           ))}
         </div>
       </section>
-            
-   <section id="contact" className="max-w-3xl mx-auto px-6 py-16">
-      <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
-        Contact Info
-      </h2>
+      <section id="contact" className="max-w-3xl mx-auto px-6 py-16">
+        <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
+          Contact Info
+        </h2>
 
-      <div className="grid gap-8 sm:grid-cols-3">
-        {/* Email */}
-        <a
-          href="mailto:jegarsg@gmail.com"
-          className="
+        <div className="grid gap-8 sm:grid-cols-3">
+          {/* Email */}
+          <a
+            href="mailto:jegarsg@gmail.com"
+            className="
             group flex flex-col items-center gap-4 p-8 rounded-2xl
             bg-white dark:bg-gray-900 shadow-lg
             sm:(bg-white/30 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700 shadow-none
                 hover:scale-105 hover:shadow-xl transition-transform transition-shadow duration-300)
           "
-        >
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-cyan-500 text-white group-hover:bg-cyan-600 group-hover:shadow-[0_0_10px_cyan] transition-all duration-300">
-            <FaEnvelope size={24} />
-          </div>
-          <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
-            jegarsg@gmail.com
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-cyan-500 transition-all group-hover:w-full"></span>
-          </span>
-        </a>
+          >
+            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-cyan-500 text-white group-hover:bg-cyan-600 group-hover:shadow-[0_0_10px_cyan] transition-all duration-300">
+              <FaEnvelope size={24} />
+            </div>
+            <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
+              jegarsg@gmail.com
+              <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-cyan-500 transition-all group-hover:w-full"></span>
+            </span>
+          </a>
 
-        {/* Phone */}
-        <a
-          href="tel:+6282128614801"
-          className="
+          {/* Phone */}
+          <a
+            href="tel:+6282128614801"
+            className="
             group flex flex-col items-center gap-4 p-8 rounded-2xl
             bg-white dark:bg-gray-900 shadow-lg
             sm:(bg-white/30 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700 shadow-none
                 hover:scale-105 hover:shadow-xl transition-transform transition-shadow duration-300)
           "
-        >
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-green-500 text-white group-hover:bg-green-600 group-hover:shadow-[0_0_10px_green] transition-all duration-300">
-            <FaPhone size={24} />
-          </div>
-          <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
-            +62 (821) 2861-4801
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all group-hover:w-full"></span>
-          </span>
-        </a>
+          >
+            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-green-500 text-white group-hover:bg-green-600 group-hover:shadow-[0_0_10px_green] transition-all duration-300">
+              <FaPhone size={24} />
+            </div>
+            <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
+              +62 (821) 2861-4801
+              <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all group-hover:w-full"></span>
+            </span>
+          </a>
 
-        {/* Location */}
-        <div
-          className="
+          {/* Location */}
+          <div
+            className="
             group flex flex-col items-center gap-4 p-8 rounded-2xl
             bg-white dark:bg-gray-900 shadow-lg
             sm:(bg-white/30 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700 shadow-none
                 hover:scale-105 hover:shadow-xl transition-transform transition-shadow duration-300)
           "
-        >
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-red-500 text-white group-hover:bg-red-600 group-hover:shadow-[0_0_10px_red] transition-all duration-300">
-            <FaMapMarkerAlt size={24} />
+          >
+            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-red-500 text-white group-hover:bg-red-600 group-hover:shadow-[0_0_10px_red] transition-all duration-300">
+              <FaMapMarkerAlt size={24} />
+            </div>
+            <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
+              Jakarta, ID
+              <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all group-hover:w-full"></span>
+            </span>
           </div>
-          <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
-            Jakarta, ID
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all group-hover:w-full"></span>
-          </span>
         </div>
-      </div>
-    </section>
+      </section>
       {/* FOOTER */}
       <footer className="text-center text-sm text-gray-500 dark:text-gray-400 py-6">
         Powered by Next.js 15 + Tailwind CSS. © {new Date().getFullYear()}
