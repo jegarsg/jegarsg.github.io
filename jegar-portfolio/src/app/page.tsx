@@ -17,6 +17,9 @@ import {
   FaTools,
   FaProjectDiagram,
   FaEnvelope,
+  FaMapMarkerAlt,
+  FaPhone,
+    FaTwitter,
 } from 'react-icons/fa'
 import {
   SiDotnet,
@@ -172,7 +175,7 @@ export default function Home() {
         { icon: <SiNestjs className="text-red-500" />, label: 'NestJS' },
         { icon: <SiNextdotjs className="text-black dark:text-white" />, label: 'Next.js' },
         { icon: <SiNodedotjs className="text-green-600" />, label: 'Node.js' },
-        { icon: <SiAngular className="text-red-600" />, label: 'Angular' },
+        { icon: <SiAngular className="text-red-600" />, label: 'Angular JS' },
         { icon: <SiGin className="text-green-700" />, label: 'Gin' },
         { icon: <SiDotnet className="text-purple-500" />, label: '.NET Core' },
         { icon: <SiSpringboot className="text-purple-500" />, label: 'Springboot' },
@@ -205,6 +208,7 @@ export default function Home() {
       ],
     },
   ]
+
   return (
     <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       {/* NAVBAR */}
@@ -248,13 +252,8 @@ export default function Home() {
               </a>
             </li>
             <li>
-              <a href="#projects" className="hover:text-cyan-500">
-                Projects
-              </a>
-            </li>
-            <li>
               <a href="#contact" className="hover:text-cyan-500">
-                Contact
+                Contacts
               </a>
             </li>
             <li>
@@ -308,24 +307,15 @@ export default function Home() {
                       Skills
                     </a>
                   </li>
+                  
                   <li>
-                    <a
-                      href="#projects"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                    >
-                      <FaProjectDiagram className="w-5 h-5 text-pink-500" />
-                      Projects
-                    </a>
-                  </li>
-                  <li className="col-span-2">
                     <a
                       href="#contact"
                       onClick={() => setIsOpen(false)}
                       className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                     >
                       <FaEnvelope className="w-5 h-5 text-red-500" />
-                      Contact
+                      Contacts
                     </a>
                   </li>
                 </ul>
@@ -373,12 +363,13 @@ export default function Home() {
               <motion.a
                 href="/resume.pdf"
                 className="bg-white text-cyan-600 px-3 py-1.5 rounded shadow inline-flex items-center gap-2 text-sm
-              transition-colors duration-300 ease-in-out
-              hover:bg-cyan-600 hover:text-white"
+    transition-colors duration-300 ease-in-out
+    hover:bg-cyan-600 hover:text-white"
                 variants={buttonVariants}
                 initial="hidden"
                 animate="visible"
                 whileHover="hover"
+                whileTap={{ scale: 0.95, rotate: 0 }} // Add this for mobile tap feedback
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -390,12 +381,13 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white text-gray-800 px-3 py-1.5 rounded shadow inline-flex items-center gap-2 text-sm
-              transition-colors duration-300 ease-in-out
-              hover:bg-gray-800 hover:text-white"
+    transition-colors duration-300 ease-in-out
+    hover:bg-gray-800 hover:text-white"
                 variants={buttonVariants}
                 initial="hidden"
                 animate="visible"
                 whileHover="hover"
+                whileTap={{ scale: 0.95, rotate: 0 }}
               >
                 <FaGithub /> GitHub
               </motion.a>
@@ -405,12 +397,13 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white text-blue-600 px-3 py-1.5 rounded shadow inline-flex items-center gap-2 text-sm
-              transition-colors duration-300 ease-in-out
-              hover:bg-blue-600 hover:text-white"
+    transition-colors duration-300 ease-in-out
+    hover:bg-blue-600 hover:text-white"
                 variants={buttonVariants}
                 initial="hidden"
                 animate="visible"
                 whileHover="hover"
+                whileTap={{ scale: 0.95, rotate: 0 }}
               >
                 <FaLinkedin /> LinkedIn
               </motion.a>
@@ -548,6 +541,70 @@ export default function Home() {
           ))}
         </div>
       </section>
+            
+   <section className="max-w-3xl mx-auto px-6 py-16">
+      <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
+        Contact Info
+      </h2>
+
+      <div className="grid gap-8 sm:grid-cols-3">
+        {/* Email */}
+        <a
+          href="mailto:jegarsg@gmail.com"
+          className="
+            group flex flex-col items-center gap-4 p-8 rounded-2xl
+            bg-white dark:bg-gray-900 shadow-lg
+            sm:(bg-white/30 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700 shadow-none
+                hover:scale-105 hover:shadow-xl transition-transform transition-shadow duration-300)
+          "
+        >
+          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-cyan-500 text-white group-hover:bg-cyan-600 group-hover:shadow-[0_0_10px_cyan] transition-all duration-300">
+            <FaEnvelope size={24} />
+          </div>
+          <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
+            jegarsg@gmail.com
+            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-cyan-500 transition-all group-hover:w-full"></span>
+          </span>
+        </a>
+
+        {/* Phone */}
+        <a
+          href="tel:+6282128614801"
+          className="
+            group flex flex-col items-center gap-4 p-8 rounded-2xl
+            bg-white dark:bg-gray-900 shadow-lg
+            sm:(bg-white/30 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700 shadow-none
+                hover:scale-105 hover:shadow-xl transition-transform transition-shadow duration-300)
+          "
+        >
+          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-green-500 text-white group-hover:bg-green-600 group-hover:shadow-[0_0_10px_green] transition-all duration-300">
+            <FaPhone size={24} />
+          </div>
+          <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
+            +62 (821) 2861-4801
+            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all group-hover:w-full"></span>
+          </span>
+        </a>
+
+        {/* Location */}
+        <div
+          className="
+            group flex flex-col items-center gap-4 p-8 rounded-2xl
+            bg-white dark:bg-gray-900 shadow-lg
+            sm:(bg-white/30 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700 shadow-none
+                hover:scale-105 hover:shadow-xl transition-transform transition-shadow duration-300)
+          "
+        >
+          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-red-500 text-white group-hover:bg-red-600 group-hover:shadow-[0_0_10px_red] transition-all duration-300">
+            <FaMapMarkerAlt size={24} />
+          </div>
+          <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
+            Jakarta, ID
+            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all group-hover:w-full"></span>
+          </span>
+        </div>
+      </div>
+    </section>
       {/* FOOTER */}
       <footer className="text-center text-sm text-gray-500 dark:text-gray-400 py-6">
         Powered by Next.js 15 + Tailwind CSS. © {new Date().getFullYear()}
