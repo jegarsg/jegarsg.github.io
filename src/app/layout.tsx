@@ -2,7 +2,7 @@ import './globals.css'
 import ScrollToTopButton from './components/ScrollToTopButton'
 
 export const metadata = {
-  title: 'My Portfolio',
+  title: 'Jegar Sahaduta Ginting',
   description: 'Full-stack developer portfolio',
 }
 
