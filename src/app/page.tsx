@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import {
   FaDownload,
   FaBriefcase,
@@ -41,6 +41,8 @@ import {
   SiSharp,
   SiJetbrains,
   SiSpringboot,
+  SiFastapi,
+  SiKubernetes,
 } from 'react-icons/si'
 import DarkModeToggle from './components/DarkModeToggle'
 import { RiJavaFill } from 'react-icons/ri'
@@ -49,6 +51,7 @@ import { VscAzureDevops } from 'react-icons/vsc'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react'
+import { FaRust } from 'react-icons/fa6'
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'work' | 'education'>('work')
@@ -143,6 +146,8 @@ export default function Home() {
         { icon: <SiGin className="text-green-700" />, label: 'Gin' },
         { icon: <SiDotnet className="text-purple-500" />, label: '.NET Core' },
         { icon: <SiSpringboot className="text-purple-500" />, label: 'Springboot' },
+        { icon: <SiFastapi className="text-purple-500" />, label: 'FastApi' },
+         { icon: <FaRust className="text-purple-500" />, label: 'Axum' },
       ],
     },
     {
@@ -162,7 +167,7 @@ export default function Home() {
         { icon: <SiJenkins className="text-red-700" />, label: 'Jenkins' },
         { icon: <SiGithubactions className="text-gray-800" />, label: 'GitHub Actions' },
         { icon: <SiElastic className="text-yellow-700" />, label: 'ELK Stack' },
-        { icon: <SiElastic className="text-blue-600" />, label: 'Kubernetes' },
+        { icon: <SiKubernetes className="text-blue-600" />, label: 'Kubernetes' },
         { icon: <SiBitbucket className="text-blue-700" />, label: 'Bitbucket' },
         { icon: <SiJira className="text-blue-500" />, label: 'Jira' },
         { icon: <DiVisualstudio className="text-indigo-600" />, label: 'VSCode' },
@@ -172,209 +177,228 @@ export default function Home() {
       ],
     },
   ]
+  const [scrolled, setScrolled] = useState(false)
+  
+    useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 0)
+    }
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-      {/* NAVBAR */}
-      <header className="fixed top-0 w-full bg-white dark:bg-gray-800 shadow z-50 transition-colors duration-300">
-        <nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between md:justify-center relative">
-          {/* Left: Logo as clickable link */}
-          <Link
-            href="/"
-            className="text-2xl font-bold text-gray-900 dark:text-white absolute left-4 top-1/2 -translate-y-1/2 md:static md:translate-y-0"
+      <header
+      className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
+        scrolled
+          ? 'bg-white dark:bg-gray-800 shadow-lg'
+          : 'bg-transparent dark:bg-transparent shadow-none'
+      }`}
+    >
+      <nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between md:justify-center relative">
+        {/* Left: Logo as clickable link */}
+        <Link
+          href="/"
+          className="text-2xl font-bold text-gray-900 dark:text-white absolute left-4 top-1/2 -translate-y-1/2 md:static md:translate-y-0"
+        >
+          JG
+        </Link>
+
+        {/* Mobile Right: Dark Mode Toggle + Hamburger menu side by side */}
+        <div className="md:hidden absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-4">
+          <DarkModeToggle />
+          <button
+            className="text-gray-700 dark:text-white focus:outline-none"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
           >
-            JG
-          </Link>
-
-          {/* Mobile Right: Dark Mode Toggle + Hamburger menu side by side */}
-          <div className="md:hidden absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-4">
-            <DarkModeToggle />
-            <button
-              className="text-gray-700 dark:text-white focus:outline-none"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-
-          {/* Desktop navigation */}
-          <ul className="hidden md:flex gap-6 font-semibold items-center ml-auto text-gray-800 dark:text-gray-200">
-            <li>
-              <Link href="#about" className="hover:text-cyan-500">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link href="#experience" className="hover:text-cyan-500">
-                Experiences
-              </Link>
-            </li>
-            <li>
-              <Link href="#skills" className="hover:text-cyan-500">
-                Skills
-              </Link>
-            </li>
-            <li>
-              <Link href="#contact" className="hover:text-cyan-500">
-                Contacts
-              </Link>
-            </li>
-            <li>
-              <DarkModeToggle />
-            </li>
-          </ul>
-        </nav>
-
-        {/* Mobile bottom nav menu */}
-        {isOpen && (
-          <AnimatePresence>
-            <motion.nav
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 30 }}
-              transition={{
-                duration: 0.35,
-                ease: [0.16, 1, 0.3, 1], // easeOutBack
-              }}
-              className="md:hidden fixed bottom-0 left-0 w-full z-50"
-            >
-              <div className="w-[95%] max-w-md mx-auto mb-2 bg-white/70 dark:bg-gray-800/80 backdrop-blur-lg border border-gray-200 dark:border-gray-700 rounded-3xl shadow-2xl p-6 transition-all duration-300">
-                <ul className="grid grid-cols-2 gap-4 text-center text-sm font-medium text-gray-800 dark:text-gray-100">
-                  <li>
-                    <Link
-                      href="#about"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                    >
-                      <FaUser className="w-5 h-5 text-blue-500" />
-                      About
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="#experience"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                    >
-                      <FaBriefcase className="w-5 h-5 text-green-500" />
-                      Experience
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="#skills"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                    >
-                      <FaTools className="w-5 h-5 text-yellow-500" />
-                      Skills
-                    </Link>
-                  </li>
-                  
-                  <li>
-                    <Link
-                      href="#contact"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                    >
-                      <FaEnvelope className="w-5 h-5 text-red-500" />
-                      Contacts
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </motion.nav>
-          </AnimatePresence>
-        )}
-      </header>
-      );
-      <section id="about" className="pt-32 pb-20 max-w-5xl mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold mb-1">Jegar Sahaduta Ginting</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-8">Software Engineer</p>
-
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileHover={{ scale: 1.05, rotate: 1 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-          >
-            <Image
-              src="/profile.jpg"
-              alt="Profile"
-              width={200}
-              height={200}
-              className="rounded-xl shadow-lg"
-            />
-          </motion.div>
-
-          <div className="max-w-xl text-center md:text-left">
-            <p className="mb-4">
-              Senior Software Engineer with over 7 years of experience designing and delivering
-              enterprise-grade backend systems. Focused on scalable architectures, cloud
-              infrastructure, and applying Clean Architecture principles to build maintainable
-              solutions.
-            </p>
-            <p className="mb-4">
-              Experienced across the full Software Development lifecycle and Microservices, with a
-              strong passion for clean code and scalable systems. Interested in leveraging
-              Artificial Intelligence Technologies to drive innovation and enhance product
-              capabilities.
-            </p>
-
-            <div className="flex gap-4 mb-4 flex-wrap justify-center md:justify-start">
-              <motion.a
-                href="/resume.pdf"
-                className="bg-white text-cyan-600 px-3 py-1.5 rounded shadow inline-flex items-center gap-2 text-sm
-    transition-colors duration-300 ease-in-out
-    hover:bg-cyan-600 hover:text-white"
-                variants={buttonVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                whileTap={{ scale: 0.95, rotate: 0 }} // Add this for mobile tap feedback
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Resume <FaDownload />
-              </motion.a>
-
-              <motion.a
-                href="https://github.com/jegarsg"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white text-gray-800 px-3 py-1.5 rounded shadow inline-flex items-center gap-2 text-sm
-    transition-colors duration-300 ease-in-out
-    hover:bg-gray-800 hover:text-white"
-                variants={buttonVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                whileTap={{ scale: 0.95, rotate: 0 }}
-              >
-                <FaGithub /> GitHub
-              </motion.a>
-
-              <motion.a
-                href="https://linkedin.com/in/jegarsg"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white text-blue-600 px-3 py-1.5 rounded shadow inline-flex items-center gap-2 text-sm
-    transition-colors duration-300 ease-in-out
-    hover:bg-blue-600 hover:text-white"
-                variants={buttonVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                whileTap={{ scale: 0.95, rotate: 0 }}
-              >
-                <FaLinkedin /> LinkedIn
-              </motion.a>
-            </div>
-          </div>
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
-      </section>
+
+        {/* Desktop navigation */}
+        <ul className="hidden md:flex gap-6 font-semibold items-center ml-auto text-gray-800 dark:text-gray-200">
+          <li>
+            <Link href="#about" className="hover:text-cyan-500">
+              About
+            </Link>
+          </li>
+          <li>
+            <Link href="#experience" className="hover:text-cyan-500">
+              Experiences
+            </Link>
+          </li>
+          <li>
+            <Link href="#skills" className="hover:text-cyan-500">
+              Skills
+            </Link>
+          </li>
+          <li>
+            <Link href="#contact" className="hover:text-cyan-500">
+              Contacts
+            </Link>
+          </li>
+          <li>
+            <DarkModeToggle />
+          </li>
+        </ul>
+      </nav>
+
+      {/* Mobile bottom nav menu */}
+      {isOpen && (
+        <AnimatePresence>
+          <motion.nav
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 30 }}
+            transition={{
+              duration: 0.35,
+              ease: [0.16, 1, 0.3, 1], // easeOutBack
+            }}
+            className="md:hidden fixed bottom-0 left-0 w-full z-50"
+          >
+            <div className="w-[95%] max-w-md mx-auto mb-2 bg-white/70 dark:bg-gray-800/80 backdrop-blur-lg border border-gray-200 dark:border-gray-700 rounded-3xl shadow-2xl p-6 transition-all duration-300">
+              <ul className="grid grid-cols-2 gap-4 text-center text-sm font-medium text-gray-800 dark:text-gray-100">
+                <li>
+                  <Link
+                    href="#about"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                  >
+                    <FaUser className="w-5 h-5 text-blue-500" />
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#experience"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                  >
+                    <FaBriefcase className="w-5 h-5 text-green-500" />
+                    Experience
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#skills"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                  >
+                    <FaTools className="w-5 h-5 text-yellow-500" />
+                    Skills
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    href="#contact"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                  >
+                    <FaEnvelope className="w-5 h-5 text-red-500" />
+                    Contacts
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </motion.nav>
+        </AnimatePresence>
+      )}
+    </header>
+
+     <section id="about" className="pt-28 pb-20 max-w-4xl mx-auto px-4 text-center">
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+  >
+    <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
+      Hi, my name is <br />
+      <span className="text-cyan-600">Jegar</span>
+    </h1>
+
+    <p className="text-lg text-gray-600 dark:text-gray-300 font-medium mb-6">
+      Engineering Solutions, Not Just Code.
+    </p>
+
+    <div className="flex justify-center mb-8">
+      <motion.div
+        whileHover={{ scale: 1.05, rotate: 1 }}
+        transition={{ duration: 0.4 }}
+      >
+       <Image
+  src="/profile.jpg"
+  alt="Jegar Profile"
+  width={220}
+  height={280}
+  className="rounded-x shadow-xl object-cover"
+/>
+      </motion.div>
+    </div>
+
+    <p className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto mb-6">
+      Senior Software Engineer with 7+ years of experience building scalable backend systems,
+      cloud-native infrastructure, and applying Clean Architecture principles. Passionate about
+      crafting systems that scale — and now exploring AI for the future.
+    </p>
+
+    <div className="flex flex-wrap justify-center gap-4">
+     <motion.a
+    href="/resume.pdf"
+    className="bg-white text-cyan-600 px-3 py-1.5 rounded shadow inline-flex items-center gap-2 text-sm
+      transition-colors duration-300 ease-in-out
+      hover:bg-cyan-600 hover:text-white"
+    variants={buttonVariants}
+    initial="hidden"
+    animate="visible"
+    whileHover="hover"
+    whileTap={{ scale: 0.95, rotate: 0 }}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <FaDownload className="w-4 h-4" />
+    Resume
+  </motion.a>
+
+  <motion.a
+    href="https://github.com/jegarsg"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="bg-white text-gray-800 px-3 py-1.5 rounded shadow inline-flex items-center gap-2 text-sm
+      transition-colors duration-300 ease-in-out
+      hover:bg-gray-800 hover:text-white"
+    variants={buttonVariants}
+    initial="hidden"
+    animate="visible"
+    whileHover="hover"
+    whileTap={{ scale: 0.95, rotate: 0 }}
+  >
+    <FaGithub className="w-4 h-4" />
+    GitHub
+  </motion.a>
+
+  <motion.a
+    href="https://linkedin.com/in/jegarsg"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="bg-white text-blue-600 px-3 py-1.5 rounded shadow inline-flex items-center gap-2 text-sm
+      transition-colors duration-300 ease-in-out
+      hover:bg-blue-600 hover:text-white"
+    variants={buttonVariants}
+    initial="hidden"
+    animate="visible"
+    whileHover="hover"
+    whileTap={{ scale: 0.95, rotate: 0 }}
+  >
+    <FaLinkedin className="w-4 h-4" />
+    LinkedIn
+  </motion.a>
+    </div>
+  </motion.div>
+</section>
       {/* EXPERIENCE */}
       <section id="experience" className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-3xl mx-auto px-4">
@@ -506,73 +530,100 @@ export default function Home() {
         </div>
       </section>
             
-   <section id="contact" className="max-w-3xl mx-auto px-6 py-16">
-      <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
-        Contact Info
+ <section id="contact" className="px-4 py-10 text-center">
+      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
+        Contact
       </h2>
 
-      <div className="grid gap-8 sm:grid-cols-3">
+      <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-gray-800 dark:text-gray-200">
         {/* Email */}
-        <Link
-          href="mailto:jegarsg@gmail.com"
-          className="
-            group flex flex-col items-center gap-4 p-8 rounded-2xl
-            bg-white dark:bg-gray-900 shadow-lg
-            sm:(bg-white/30 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700 shadow-none
-                hover:scale-105 hover:shadow-xl transition-transform transition-shadow duration-300)
-          "
-        >
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-cyan-500 text-white group-hover:bg-cyan-600 group-hover:shadow-[0_0_10px_cyan] transition-all duration-300">
-            <FaEnvelope size={24} />
-          </div>
-          <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
-            jegarsg@gmail.com
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-cyan-500 transition-all group-hover:w-full"></span>
-          </span>
+        <Link href="mailto:jegarsg@gmail.com" className="flex items-center gap-2 hover:underline">
+          <FaEnvelope className="text-cyan-500" />
+          jegarsg@gmail.com
         </Link>
 
         {/* Phone */}
-        <Link
-          href="tel:+6282128614801"
-          className="
-            group flex flex-col items-center gap-4 p-8 rounded-2xl
-            bg-white dark:bg-gray-900 shadow-lg
-            sm:(bg-white/30 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700 shadow-none
-                hover:scale-105 hover:shadow-xl transition-transform transition-shadow duration-300)
-          "
-        >
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-green-500 text-white group-hover:bg-green-600 group-hover:shadow-[0_0_10px_green] transition-all duration-300">
-            <FaPhone size={24} />
-          </div>
-          <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
-            +62 (821) 2861-4801
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all group-hover:w-full"></span>
-          </span>
+        <Link href="tel:+6282128614801" className="flex items-center gap-2 hover:underline">
+          <FaPhone className="text-green-500" />
+          +62 821 2861 4801
         </Link>
 
         {/* Location */}
-        <div
-          className="
-            group flex flex-col items-center gap-4 p-8 rounded-2xl
-            bg-white dark:bg-gray-900 shadow-lg
-            sm:(bg-white/30 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 dark:border-gray-700 shadow-none
-                hover:scale-105 hover:shadow-xl transition-transform transition-shadow duration-300)
-          "
-        >
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-red-500 text-white group-hover:bg-red-600 group-hover:shadow-[0_0_10px_red] transition-all duration-300">
-            <FaMapMarkerAlt size={24} />
-          </div>
-          <span className="text-lg font-semibold text-gray-900 dark:text-white relative cursor-pointer">
-            Jakarta, ID
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all group-hover:w-full"></span>
-          </span>
+        <div className="flex items-center gap-2">
+          <FaMapMarkerAlt className="text-red-500" />
+          Jakarta, ID
         </div>
+
+       
       </div>
     </section>
-      {/* FOOTER */}
-      <footer className="text-center text-sm text-gray-500 dark:text-gray-400 py-6">
-        Powered by Next.js 15 + Tailwind CSS. © {new Date().getFullYear()}
-      </footer>
+
+     {/* FOOTER */}
+      <footer className="bg-gray-100 dark:bg-gray-800 py-6 mt-10 text-sm text-gray-700 dark:text-gray-300">
+  <div className="max-w-screen-xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+    {/* Left side */}
+    <p className="text-center sm:text-left flex-1 text-gray-700 dark:text-gray-300">
+      © {new Date().getFullYear()}{' '}
+      <span className="font-medium text-black dark:text-white">Jegar</span>. Built with{' '}
+      <span className="text-black dark:text-white font-semibold">Next.js</span> &{' '}
+      <span className="text-sky-500 font-semibold">Tailwind CSS</span>.
+    </p>
+
+    {/* Center fork link: only show on md and up */}
+    <div className="hidden md:flex flex-1 justify-center">
+     <a
+  href="https://github.com/jegarsg/jegarsg.github.io/fork"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:text-sky-500 dark:hover:text-sky-400 transition-colors transform hover:scale-110 motion-reduce:transform-none select-none"
+  aria-label="Fork me on GitHub"
+>
+  {/* Simplified fork icon (stroke only) */}
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="w-4 h-4"
+    viewBox="0 0 24 24"
+  >
+    <circle cx="18" cy="5" r="3" />
+    <circle cx="6" cy="12" r="3" />
+    <circle cx="18" cy="19" r="3" />
+    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+  </svg>
+
+  <span className="text-sm font-medium">Fork</span>
+</a>
+
+    </div>
+
+    {/* Right side social icons */}
+    <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400 flex-1 justify-end">
+      <a
+        href="https://github.com/jegarsg"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-black dark:hover:text-white transition-colors"
+      >
+        <FaGithub size={20} />
+      </a>
+      <a
+        href="https://linkedin.com/in/jegarsg"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+      >
+        <FaLinkedin size={20} />
+      </a>
+    </div>
+  </div>
+</footer>
+
+
     </main>
   )
 }
