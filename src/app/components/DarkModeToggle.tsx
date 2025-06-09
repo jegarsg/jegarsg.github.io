@@ -37,36 +37,32 @@ const moonIcon = (
 )
 
 export default function DarkModeToggle() {
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState<boolean | null>(null)
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+
     const html = document.documentElement
     const savedTheme = localStorage.getItem('theme')
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
-    if (
+    const enabled =
       savedTheme === 'dark' ||
-      (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      html.classList.add('dark')
-      setIsDarkMode(true)
-    } else {
-      html.classList.remove('dark')
-      setIsDarkMode(false)
-    }
+      (!savedTheme && prefersDark)
+
+    html.classList.toggle('dark', enabled)
+    setIsDarkMode(enabled)
   }, [])
 
   const toggleDarkMode = () => {
     const html = document.documentElement
-    if (isDarkMode) {
-      html.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-    } else {
-      html.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-    }
-    setIsDarkMode(!isDarkMode)
+    const newMode = !isDarkMode
+    html.classList.toggle('dark', newMode)
+    localStorage.setItem('theme', newMode ? 'dark' : 'light')
+    setIsDarkMode(newMode)
   }
 
+  if (isDarkMode === null) return null
   return (
     <button
       aria-label="Toggle dark mode"
