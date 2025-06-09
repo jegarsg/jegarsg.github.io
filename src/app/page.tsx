@@ -187,6 +187,33 @@ export default function Home() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+   const [activeSection, setActiveSection] = useState('');
+
+   const sections = ['about', 'experience', 'skills', 'contact'];
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+
+      for (const id of sections) {
+        const section = document.getElementById(id);
+        if (section) {
+          const offsetTop = section.offsetTop - 100; // Adjust for header height
+          const offsetBottom = offsetTop + section.offsetHeight;
+
+          if (scrollY >= offsetTop && scrollY < offsetBottom) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // run once on mount
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <header
@@ -219,30 +246,22 @@ export default function Home() {
 
         {/* Desktop navigation */}
         <ul className="hidden md:flex gap-6 font-semibold items-center ml-auto text-gray-800 dark:text-gray-200">
-          <li>
-            <Link href="#about" className="hover:text-cyan-500">
-              About
+        {sections.map((section) => (
+          <li key={section}>
+            <Link
+              href={`#${section}`}
+              className={`hover:text-cyan-500 ${
+                activeSection === section ? 'text-cyan-500' : ''
+              }`}
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
             </Link>
           </li>
-          <li>
-            <Link href="#experience" className="hover:text-cyan-500">
-              Experiences
-            </Link>
-          </li>
-          <li>
-            <Link href="#skills" className="hover:text-cyan-500">
-              Skills
-            </Link>
-          </li>
-          <li>
-            <Link href="#contact" className="hover:text-cyan-500">
-              Contacts
-            </Link>
-          </li>
-          <li>
-            <DarkModeToggle />
-          </li>
-        </ul>
+        ))}
+        <li>
+          <DarkModeToggle />
+        </li>
+      </ul>
       </nav>
 
       {/* Mobile bottom nav menu */}
