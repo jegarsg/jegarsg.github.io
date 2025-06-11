@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import {
   FaDownload,
   FaBriefcase,
@@ -186,7 +186,7 @@ export default function Home() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const projects = [
+  const projects = useMemo(() => [
     {
       id: 1,
       title: 'API Gateway Management',
@@ -235,7 +235,7 @@ export default function Home() {
       tech: ['Elasticsearch', 'Logstash', 'Kibana'],
       image: '',
     },
-  ]
+  ])
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const [selected, setSelected] = useState(null)
@@ -245,7 +245,6 @@ export default function Home() {
   const isTouchingRef = useRef(false)
   const isHoveringRef = useRef(false)
 
-  // Ref to keep latest selected state (for modal open/close)
   const selectedRef = useRef(selected)
   useEffect(() => {
     selectedRef.current = selected
@@ -278,7 +277,6 @@ export default function Home() {
       }
     }
 
-    // Animate scroll for desktop
     function animateScroll() {
       if (
         !isDraggingRef.current &&
@@ -304,10 +302,8 @@ export default function Home() {
       animationFrameId = requestAnimationFrame(animateScroll)
     }
 
-    // Mobile auto-scroll interval
     let intervalId: number | null = null
     if (isMobile) {
-      // Do NOT clearTimers here, so the interval stays active immediately on mount
       intervalId = window.setInterval(() => {
         if (
           !isDraggingRef.current &&
@@ -330,11 +326,9 @@ export default function Home() {
         }
       }, 30)
     } else {
-      clearTimers() // clear RAF timers before starting new RAF for desktop
+      clearTimers()
       animationFrameId = requestAnimationFrame(animateScroll)
     }
-
-    // Your existing pointer/touch handlers remain unchanged
 
     function onPointerDown(e: PointerEvent) {
       isDraggingRef.current = true
@@ -505,7 +499,7 @@ export default function Home() {
               exit={{ opacity: 0, scale: 0.95, y: 30 }}
               transition={{
                 duration: 0.35,
-                ease: [0.16, 1, 0.3, 1], // easeOutBack
+                ease: [0.16, 1, 0.3, 1],
               }}
               className="md:hidden fixed bottom-0 left-0 w-full z-50"
             >
@@ -795,7 +789,7 @@ export default function Home() {
             <div
               key={project.id}
               data-project-index={index}
-              onClick={() => setSelected(project)} // ✅ ADD THIS LINE
+              onClick={() => setSelected(project)}
               className="min-w-[300px] snap-start rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 cursor-pointer"
             >
               {project.image ? (
