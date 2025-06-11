@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useRef  } from 'react'
 import {
   FaDownload,
   FaBriefcase,
@@ -52,7 +52,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import { FaRust } from 'react-icons/fa6'
-
+import { Dialog } from '@headlessui/react';
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'work' | 'education'>('work')
   const containerVariants = {
@@ -187,35 +187,251 @@ export default function Home() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const [activeSection, setActiveSection] = useState('')
+const projects = [
+  {
+    id: 1,
+    title: 'API Gateway Management',
+    description: 'Built a secure and scalable API gateway using Express.js, JWT, and Redis for rate-limiting and session management.',
+    tech: ['Node.js', 'Express.js', 'Redis', 'JWT'],
+    image: '',
+  },
+  {
+    id: 2,
+    title: 'Serverless Task Scheduler',
+    description: 'Event-driven backend using AWS Lambda and DynamoDB for asynchronous job scheduling and execution.',
+    tech: ['AWS Lambda', 'DynamoDB', 'SQS', 'CloudWatch'],
+    image: '',
+  },
+  {
+    id: 3,
+    title: 'CI/CD Automation Pipeline',
+    description: 'Automated deployment pipeline using GitHub Actions, Docker, and AWS ECS for containerized microservices.',
+    tech: ['GitHub Actions', 'Docker'],
+    image: '',
+  },
+  {
+    id: 4,
+    title: 'Headless CMS Integration',
+    description: 'Integrated Sanity and GraphQL with a custom backend API to enable flexible content workflows.',
+    tech: ['Go', 'GraphQL', 'Next.js API Routes'],
+    image: '',
+  },
+  {
+    id: 5,
+    title: 'PostgreSQL Query Optimizer',
+    description: 'Refactored large query structures and added indexing to reduce response time by 70% on core endpoints.',
+    tech: ['PostgreSQL', 'Knex.js', 'pgAdmin'],
+    image: '',
+  },
+  {
+    id: 6,
+    title: 'Monitoring & Alerting Platform',
+    description: 'Built backend logging and alert system using ELK stack and PagerDuty integration.',
+    tech: ['Elasticsearch', 'Logstash', 'Kibana'],
+    image: '',
+  },
+];
 
-  const sections = ['about', 'experience', 'skills', 'contact']
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY
+const scrollRef = useRef<HTMLDivElement>(null);
+const [selected, setSelected] = useState(null);
+const scrollDirectionRef = useRef<'right' | 'left'>('right');
+const [hovering, setHovering] = useState(false);
+const isDraggingRef = useRef(false);
+const isTouchingRef = useRef(false);
+const isHoveringRef = useRef(false);
 
-      for (const id of sections) {
-        const section = document.getElementById(id)
-        if (section) {
-          const offsetTop = section.offsetTop - 100 // Adjust for header height
-          const offsetBottom = offsetTop + section.offsetHeight
+// Ref to keep latest selected state (for modal open/close)
+const selectedRef = useRef(selected);
+useEffect(() => {
+  selectedRef.current = selected;
+}, [selected]);
 
-          if (scrollY >= offsetTop && scrollY < offsetBottom) {
-            setActiveSection(id)
-            break
-          }
+useEffect(() => {
+  const el = scrollRef.current;
+  if (!el) return;
+
+  let startX = 0;
+  let scrollLeft = 0;
+  let moved = false;
+  let animationFrameId: number | null = null;
+  let momentumId: number | null = null;
+  let velocity = 0;
+  let lastX = 0;
+  let lastTimestamp = performance.now();
+  const autoScrollSpeed = 0.7;
+
+  const isMobile = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768;
+
+  function clearTimers() {
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+    if (momentumId) {
+      cancelAnimationFrame(momentumId);
+      momentumId = null;
+    }
+  }
+
+  // Animate scroll for desktop
+  function animateScroll() {
+    if (
+      !isDraggingRef.current &&
+      !isTouchingRef.current &&
+      !isHoveringRef.current &&
+      !momentumId &&
+      !selectedRef.current &&
+      el.scrollWidth > el.clientWidth &&
+      !isMobile
+    ) {
+      if (scrollDirectionRef.current === 'right') {
+        el.scrollLeft += autoScrollSpeed;
+        if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) {
+          scrollDirectionRef.current = 'left';
+        }
+      } else {
+        el.scrollLeft -= autoScrollSpeed;
+        if (el.scrollLeft <= 0) {
+          scrollDirectionRef.current = 'right';
         }
       }
     }
+    animationFrameId = requestAnimationFrame(animateScroll);
+  }
 
-    window.addEventListener('scroll', handleScroll)
-    handleScroll() // run once on mount
+  // Mobile auto-scroll interval
+  let intervalId: number | null = null;
+  if (isMobile) {
+    // Do NOT clearTimers here, so the interval stays active immediately on mount
+    intervalId = window.setInterval(() => {
+      if (
+        !isDraggingRef.current &&
+        !isTouchingRef.current &&
+        !isHoveringRef.current &&
+        !selectedRef.current &&
+        el.scrollWidth > el.clientWidth
+      ) {
+        if (scrollDirectionRef.current === 'right') {
+          el.scrollLeft += 1;
+          if (el.scrollLeft >= el.scrollWidth - el.clientWidth) {
+            scrollDirectionRef.current = 'left';
+          }
+        } else {
+          el.scrollLeft -= 1;
+          if (el.scrollLeft <= 0) {
+            scrollDirectionRef.current = 'right';
+          }
+        }
+      }
+    }, 30);
+  } else {
+    clearTimers(); // clear RAF timers before starting new RAF for desktop
+    animationFrameId = requestAnimationFrame(animateScroll);
+  }
 
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  // Your existing pointer/touch handlers remain unchanged
+
+  function onPointerDown(e: PointerEvent) {
+    isDraggingRef.current = true;
+    moved = false;
+    startX = e.clientX;
+    lastX = e.clientX;
+    scrollLeft = el.scrollLeft;
+    velocity = 0;
+    el.setPointerCapture(e.pointerId);
+    el.style.scrollBehavior = 'auto';
+    el.style.userSelect = 'none';
+    el.style.cursor = 'grabbing';
+    if (momentumId) cancelAnimationFrame(momentumId);
+    lastTimestamp = performance.now();
+  }
+
+  function onPointerMove(e: PointerEvent) {
+    if (!isDraggingRef.current) return;
+    const delta = e.clientX - startX;
+    const dx = e.clientX - lastX;
+    velocity = dx;
+    lastX = e.clientX;
+    if (Math.abs(delta) > 5) moved = true;
+    el.scrollLeft = scrollLeft - delta;
+  }
+
+  function applyMomentum(ts: number) {
+    const elapsed = ts - lastTimestamp;
+    lastTimestamp = ts;
+
+    if (Math.abs(velocity) > 0.1) {
+      el.scrollLeft -= velocity * (elapsed / 16);
+      velocity *= 0.95;
+      momentumId = requestAnimationFrame(applyMomentum);
+    } else {
+      velocity = 0;
+      momentumId = null;
+    }
+  }
+
+  function onPointerUp(e: PointerEvent) {
+    isDraggingRef.current = false;
+    el.releasePointerCapture(e.pointerId);
+    el.style.userSelect = 'auto';
+    el.style.cursor = 'default';
+
+    if (!moved) {
+      const clickedEl = e.target as HTMLElement;
+      const card = clickedEl.closest('[data-project-index]');
+      if (card) {
+        const index = Number(card.getAttribute('data-project-index'));
+        if (!isNaN(index)) setSelected(projects[index]);
+      }
+    } else {
+      momentumId = requestAnimationFrame(applyMomentum);
+    }
+  }
+
+  function onTouchStart() {
+    isTouchingRef.current = true;
+    if (momentumId) cancelAnimationFrame(momentumId);
+  }
+
+  function onTouchEnd() {
+    isTouchingRef.current = false;
+  }
+
+  function onMouseEnter() {
+    isHoveringRef.current = true;
+  }
+
+  function onMouseLeave() {
+    isHoveringRef.current = false;
+  }
+
+  el.addEventListener('pointerdown', onPointerDown);
+  el.addEventListener('pointermove', onPointerMove);
+  el.addEventListener('pointerup', onPointerUp);
+  el.addEventListener('touchstart', onTouchStart, { passive: true });
+  el.addEventListener('touchend', onTouchEnd);
+  el.addEventListener('mouseenter', onMouseEnter);
+  el.addEventListener('mouseleave', onMouseLeave);
+  el.addEventListener('dragstart', e => e.preventDefault());
+
+  return () => {
+    clearTimers();
+    if (intervalId) clearInterval(intervalId);
+    el.removeEventListener('pointerdown', onPointerDown);
+    el.removeEventListener('pointermove', onPointerMove);
+    el.removeEventListener('pointerup', onPointerUp);
+    el.removeEventListener('touchstart', onTouchStart);
+    el.removeEventListener('touchend', onTouchEnd);
+    el.removeEventListener('mouseenter', onMouseEnter);
+    el.removeEventListener('mouseleave', onMouseLeave);
+  };
+}, [projects, selected]);
+
+
 
   return (
     <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+       {/* HEADERS */}
       <header
         className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
           scrolled
@@ -246,18 +462,31 @@ export default function Home() {
 
           {/* Desktop navigation */}
           <ul className="hidden md:flex gap-6 font-semibold items-center ml-auto text-gray-800 dark:text-gray-200">
-            {sections.map(section => (
-              <li key={section}>
-                <Link
-                  href={`#${section}`}
-                  className={`hover:text-cyan-500 ${
-                    activeSection === section ? 'text-cyan-500' : ''
-                  }`}
-                >
-                  {section.charAt(0).toUpperCase() + section.slice(1)}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link href="#about" className="hover:text-cyan-500">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="#experience" className="hover:text-cyan-500">
+                Experiences
+              </Link>
+            </li>
+            <li>
+              <Link href="#skills" className="hover:text-cyan-500">
+                Skills
+              </Link>
+            </li>
+            <li>
+              <Link href="#contact" className="hover:text-cyan-500">
+                Contacts
+              </Link>
+            </li>
+            <li>
+              <Link href="#project" className="hover:text-cyan-500">
+                Projects
+              </Link>
+            </li>
             <li>
               <DarkModeToggle />
             </li>
@@ -326,7 +555,7 @@ export default function Home() {
           </AnimatePresence>
         )}
       </header>
-
+ {/* ABOUT */}
       <section id="about" className="pt-28 pb-20 max-w-4xl mx-auto px-4 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -363,7 +592,7 @@ export default function Home() {
 
           <div className="flex flex-wrap justify-center gap-4">
             <motion.a
-              href="/resume.pdf"
+              href="/CV-Jegar-Sahaduta-Ginting.pdf"
               className="bg-white text-cyan-600 px-3 py-1.5 rounded shadow inline-flex items-center gap-2 text-sm
       transition-colors duration-300 ease-in-out
       hover:bg-cyan-600 hover:text-white"
@@ -546,6 +775,108 @@ export default function Home() {
         </div>
       </section>
 
+ {/* PROJECTS */}
+    <section className="py-16 bg-gray-50 dark:bg-gray-900">
+  <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">Projects</h2>
+
+  <div
+    ref={scrollRef}
+    className="scroll-container flex gap-4 overflow-x-auto"
+    onMouseEnter={() => setHovering?.(true)}
+    onMouseLeave={() => setHovering?.(false)}
+  >
+    {hovering ? "Hovering" : "Not hovering"}
+    {projects.map((project, index) => (
+  <div
+    key={project.id}
+    data-project-index={index}
+    onClick={() => setSelected(project)} // ✅ ADD THIS LINE
+    className="min-w-[300px] snap-start rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 cursor-pointer"
+  >
+    {project.image ? (
+      <img
+        src={project.image}
+        alt={project.title}
+        className="w-full h-48 object-cover rounded-t-2xl"
+      />
+    ) : (
+      <div className="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-t-2xl flex items-center justify-center text-gray-500 dark:text-gray-300">
+        No Image
+      </div>
+    )}
+    <div className="p-4">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{project.title}</h3>
+      <div className="flex flex-wrap gap-1">
+        {project.tech.map((tech) => (
+          <span
+            key={tech}
+            className="bg-cyan-100 dark:bg-cyan-800 text-cyan-700 dark:text-cyan-100 text-xs px-2 py-1 rounded"
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+))}
+  </div>
+
+  <AnimatePresence>
+    {selected && (
+      <motion.div
+        className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={() => setSelected(null)}
+      >
+        <motion.div
+          className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl max-w-lg w-full mx-4 relative"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            onClick={() => setSelected(null)}
+            className="absolute top-3 right-4 text-xl text-gray-400 hover:text-red-500"
+          >
+            ×
+          </button>
+          <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">{selected.title}</h3>
+
+          {selected.image ? (
+            <img
+              src={selected.image}
+              alt={selected.title}
+              className="rounded-lg mb-4 w-full h-56 object-cover"
+            />
+          ) : (
+            <div className="w-full h-56 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-500 dark:text-gray-300">
+              No Image
+            </div>
+          )}
+
+          <p className="text-gray-700 dark:text-gray-300 mb-4">{selected.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {selected.tech?.map((tech) => (
+              <span
+                key={tech}
+                className="bg-cyan-100 dark:bg-cyan-800 text-cyan-700 dark:text-cyan-100 px-3 py-1 text-xs rounded-full"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</section>
+
+
+     {/* CONTACTS */}
       <section id="contact" className="px-4 py-10 text-center">
         <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Contact</h2>
 
@@ -569,6 +900,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* FOOTER */}
       <footer className="bg-gray-100 dark:bg-gray-800 py-6 mt-10 text-sm text-gray-700 dark:text-gray-300">
