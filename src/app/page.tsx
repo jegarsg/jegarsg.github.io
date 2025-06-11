@@ -186,8 +186,7 @@ export default function Home() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const projects = useMemo(
-  () => [
+  const projects = useMemo(() => [
     {
       id: 1,
       title: 'API Gateway Management',
@@ -236,8 +235,7 @@ export default function Home() {
       tech: ['Elasticsearch', 'Logstash', 'Kibana'],
       image: '',
     },
-  ],
-);
+  ])
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const [selected, setSelected] = useState(null)
