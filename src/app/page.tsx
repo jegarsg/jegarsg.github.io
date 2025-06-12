@@ -720,94 +720,99 @@ export default function Home() {
       </section>
 
       {/* PROJECTS */}
-      <section id = "project" className="py-16 bg-gray-50 dark:bg-gray-900">
-      <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
-        Projects
-      </h2>
+      <section id="project" className="py-16 bg-gray-50 dark:bg-gray-900">
+  <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
+    Projects
+  </h2>
 
-      <div
-        ref={scrollRef}
-        className="scroll-container flex gap-4 overflow-x-auto px-4"
-      >
-        {projects.map((project, index) => (
-          <div
-            key={project.id}
-            data-project-index={index}
-            className="min-w-[300px] snap-start rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 cursor-pointer"
-          >
-            {project.image ? (
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-48 object-cover rounded-t-2xl"
-              />
-            ) : (
-              <div className="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-t-2xl flex items-center justify-center text-gray-500 dark:text-gray-300">
-                No Image
-              </div>
-            )}
-            <div className="p-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                {project.title}
-              </h3>
-              <div className="flex flex-wrap gap-1">
-                {project.tech.map(tech => (
-                  <span
-                    key={tech}
-                    className="bg-cyan-100 dark:bg-cyan-800 text-cyan-700 dark:text-cyan-100 text-xs px-2 py-1 rounded"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
+  <div className="flex justify-center">
+    <div
+      ref={scrollRef}
+      className="scroll-container flex gap-4 overflow-x-auto px-4 max-w-screen-xl w-full"
+    >
+      {projects.map((project, index) => (
+        <div
+          key={project.id}
+          data-project-index={index}
+          onClick={() => setSelected(project)} // ✅ Set selected project here
+          className="min-w-[300px] snap-start rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 cursor-pointer"
+        >
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full h-48 object-cover rounded-t-2xl"
+            />
+          ) : (
+            <div className="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-t-2xl flex items-center justify-center text-gray-500 dark:text-gray-300">
+              No Image
+            </div>
+          )}
+          <div className="p-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              {project.title}
+            </h3>
+            <div className="flex flex-wrap gap-1">
+              {project.tech.map(tech => (
+                <span
+                  key={tech}
+                  className="bg-cyan-100 dark:bg-cyan-800 text-cyan-700 dark:text-cyan-100 text-xs px-2 py-1 rounded"
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
+    </div>
+  </div>
 
-      <AnimatePresence>
-        {selected && (
-          <motion.div
-            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+  {/* ✅ Modal using AnimatePresence */}
+  <AnimatePresence>
+    {selected && (
+      <motion.div
+        className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={() => setSelected(null)}
+      >
+        <motion.div
+          className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl max-w-lg w-full mx-4 relative"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={e => e.stopPropagation()} // ✅ Prevent click bubbling
+        >
+          <button
             onClick={() => setSelected(null)}
+            className="absolute top-3 right-4 text-xl text-gray-400 hover:text-red-500"
           >
-            <motion.div
-              className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl max-w-lg w-full mx-4 relative"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              onClick={e => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setSelected(null)}
-                className="absolute top-3 right-4 text-xl text-gray-400 hover:text-red-500"
-              >
-                ×
-              </button>
-              <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
-                {selected.title}
-              </h3>
-              {selected.image ? (
-                <img
-                  src={selected.image}
-                  alt={selected.title}
-                  className="rounded-lg mb-4 w-full h-56 object-cover"
-                />
-              ) : (
-                <div className="w-full h-56 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-500 dark:text-gray-300">
-                  No Image
-                </div>
-              )}
-              <p className="text-gray-700 dark:text-gray-300">{selected.description}</p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
+            ×
+          </button>
+          <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+            {selected.title}
+          </h3>
+          {selected.image ? (
+            <img
+              src={selected.image}
+              alt={selected.title}
+              className="rounded-lg mb-4 w-full h-56 object-cover"
+            />
+          ) : (
+            <div className="w-full h-56 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-500 dark:text-gray-300">
+              No Image
+            </div>
+          )}
+          <p className="text-gray-700 dark:text-gray-300">{selected.description}</p>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</section>
+
 
           {/* CONTACTS */}
           <section id="contact" className="px-4 py-10 text-center">
