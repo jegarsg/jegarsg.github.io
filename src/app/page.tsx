@@ -14,6 +14,7 @@ import {
   FaEnvelope,
   FaMapMarkerAlt,
   FaPhone,
+  FaLaptopCode,
 } from 'react-icons/fa'
 import {
   SiDotnet,
@@ -453,63 +454,49 @@ export default function Home() {
         {/* Mobile bottom nav menu */}
         {isOpen && (
           <AnimatePresence>
+          {isOpen && (
             <motion.nav
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 30 }}
+              initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 60, scale: 0.95 }}
               transition={{
                 duration: 0.35,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="md:hidden fixed bottom-0 left-0 w-full z-50"
+              className="fixed inset-x-0 bottom-6 z-50 flex justify-center pointer-events-none"
             >
-              <div className="w-[95%] max-w-md mx-auto mb-2 bg-white/70 dark:bg-gray-800/80 backdrop-blur-lg border border-gray-200 dark:border-gray-700 rounded-3xl shadow-2xl p-6 transition-all duration-300">
-                <ul className="grid grid-cols-2 gap-4 text-center text-sm font-medium text-gray-800 dark:text-gray-100">
-                  <li>
+              <div className="pointer-events-auto w-[90%] max-w-sm bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg border border-gray-200 dark:border-gray-700 rounded-3xl shadow-2xl px-6 py-5 grid grid-cols-2 gap-4">
+                {[
+                  { href: "#about", label: "About", icon: <FaUser className="text-blue-500 w-5 h-5" /> },
+                  { href: "#experience", label: "Experience", icon: <FaBriefcase className="text-green-500 w-5 h-5" /> },
+                  { href: "#skills", label: "Skills", icon: <FaTools className="text-yellow-500 w-5 h-5" /> },
+                  { href: "#project", label: "Projects", icon: <FaLaptopCode className="text-purple-500 w-5 h-5" /> },
+                  { href: "#contact", label: "Contact", icon: <FaEnvelope className="text-red-500 w-5 h-5" />, center: true },
+                ].map(({ href, label, icon, center }) => (
+                  <motion.div
+                    key={label}
+                    className={center ? "col-span-2" : ""}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  >
                     <Link
-                      href="#about"
+                      href={href}
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                      className="flex items-center justify-center gap-2 py-2 px-4 bg-white dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-sm text-sm font-medium text-gray-700 dark:text-gray-100"
                     >
-                      <FaUser className="w-5 h-5 text-blue-500" />
-                      About
+                      {icon}
+                      {label}
                     </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="#experience"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                    >
-                      <FaBriefcase className="w-5 h-5 text-green-500" />
-                      Experience
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="#skills"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                    >
-                      <FaTools className="w-5 h-5 text-yellow-500" />
-                      Skills
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link
-                      href="#contact"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                    >
-                      <FaEnvelope className="w-5 h-5 text-red-500" />
-                      Contacts
-                    </Link>
-                  </li>
-                </ul>
+                  </motion.div>
+                ))}
               </div>
             </motion.nav>
-          </AnimatePresence>
+          )}
+        </AnimatePresence>
+        
+        
         )}
       </header>
       {/* ABOUT */}
