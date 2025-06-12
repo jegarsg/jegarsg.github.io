@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useEffect, useState, useRef, useMemo } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   FaDownload,
   FaBriefcase,
@@ -186,7 +186,15 @@ export default function Home() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const projects = useMemo(() => [
+  type Project = {
+    id: number
+    title: string
+    description: string
+    tech: string[]
+    image: string
+  }
+  
+  const projects: Project[] = [
     {
       id: 1,
       title: 'API Gateway Management',
@@ -235,17 +243,17 @@ export default function Home() {
       tech: ['Elasticsearch', 'Logstash', 'Kibana'],
       image: '',
     },
-  ])
+  ]
 
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState<Project | null>(null)
   const scrollDirectionRef = useRef<'right' | 'left'>('right')
-  const [hovering, setHovering] = useState(false)
+
   const isDraggingRef = useRef(false)
   const isTouchingRef = useRef(false)
   const isHoveringRef = useRef(false)
 
-  const selectedRef = useRef(selected)
+  const selectedRef = useRef<Project | null>(null)
   useEffect(() => {
     selectedRef.current = selected
   }, [selected])
@@ -263,74 +271,44 @@ export default function Home() {
     let lastX = 0
     let lastTimestamp = performance.now()
     const autoScrollSpeed = 0.7
+    
 
-    const isMobile = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768
-
-    function clearTimers() {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId)
-        animationFrameId = null
-      }
-      if (momentumId) {
-        cancelAnimationFrame(momentumId)
-        momentumId = null
-      }
+    const clearTimers = () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId)
+      if (momentumId) cancelAnimationFrame(momentumId)
+        if (momentumId !== null) {
+          cancelAnimationFrame(momentumId)
+          momentumId = null
+        }
     }
 
-    function animateScroll() {
+    const animateScroll = () => {
       if (
-        !isDraggingRef.current &&
-        !isTouchingRef.current &&
-        !isHoveringRef.current &&
-        !momentumId &&
-        !selectedRef.current &&
-        el.scrollWidth > el.clientWidth &&
-        !isMobile
+        !el ||
+        isDraggingRef.current ||
+        isTouchingRef.current ||
+        isHoveringRef.current ||
+        momentumId ||
+        selectedRef.current ||
+        el.scrollWidth <= el.clientWidth
       ) {
-        if (scrollDirectionRef.current === 'right') {
-          el.scrollLeft += autoScrollSpeed
-          if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) {
-            scrollDirectionRef.current = 'left'
-          }
-        } else {
-          el.scrollLeft -= autoScrollSpeed
-          if (el.scrollLeft <= 0) {
-            scrollDirectionRef.current = 'right'
-          }
-        }
+        animationFrameId = requestAnimationFrame(animateScroll)
+        return
       }
+
+      if (scrollDirectionRef.current === 'right') {
+        el.scrollLeft += autoScrollSpeed
+        if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) scrollDirectionRef.current = 'left'
+      } else {
+        el.scrollLeft -= autoScrollSpeed
+        if (el.scrollLeft <= 0) scrollDirectionRef.current = 'right'
+      }
+
       animationFrameId = requestAnimationFrame(animateScroll)
     }
 
-    let intervalId: number | null = null
-    if (isMobile) {
-      intervalId = window.setInterval(() => {
-        if (
-          !isDraggingRef.current &&
-          !isTouchingRef.current &&
-          !isHoveringRef.current &&
-          !selectedRef.current &&
-          el.scrollWidth > el.clientWidth
-        ) {
-          if (scrollDirectionRef.current === 'right') {
-            el.scrollLeft += 1
-            if (el.scrollLeft >= el.scrollWidth - el.clientWidth) {
-              scrollDirectionRef.current = 'left'
-            }
-          } else {
-            el.scrollLeft -= 1
-            if (el.scrollLeft <= 0) {
-              scrollDirectionRef.current = 'right'
-            }
-          }
-        }
-      }, 30)
-    } else {
-      clearTimers()
-      animationFrameId = requestAnimationFrame(animateScroll)
-    }
-
-    function onPointerDown(e: PointerEvent) {
+    const onPointerDown = (e: PointerEvent) => {
+      if (!el) return
       isDraggingRef.current = true
       moved = false
       startX = e.clientX
@@ -345,8 +323,8 @@ export default function Home() {
       lastTimestamp = performance.now()
     }
 
-    function onPointerMove(e: PointerEvent) {
-      if (!isDraggingRef.current) return
+    const onPointerMove = (e: PointerEvent) => {
+      if (!el || !isDraggingRef.current) return
       const delta = e.clientX - startX
       const dx = e.clientX - lastX
       velocity = dx
@@ -355,7 +333,8 @@ export default function Home() {
       el.scrollLeft = scrollLeft - delta
     }
 
-    function applyMomentum(ts: number) {
+    const applyMomentum = (ts: number) => {
+      if (!el) return
       const elapsed = ts - lastTimestamp
       lastTimestamp = ts
 
@@ -366,18 +345,19 @@ export default function Home() {
       } else {
         velocity = 0
         momentumId = null
+        animationFrameId = requestAnimationFrame(animateScroll) // resume auto-scroll
       }
     }
 
-    function onPointerUp(e: PointerEvent) {
+    const onPointerUp = (e: PointerEvent) => {
+      if (!el) return
       isDraggingRef.current = false
       el.releasePointerCapture(e.pointerId)
       el.style.userSelect = 'auto'
       el.style.cursor = 'default'
 
       if (!moved) {
-        const clickedEl = e.target as HTMLElement
-        const card = clickedEl.closest('[data-project-index]')
+        const card = (e.target as HTMLElement).closest('[data-project-index]')
         if (card) {
           const index = Number(card.getAttribute('data-project-index'))
           if (!isNaN(index)) setSelected(projects[index])
@@ -387,44 +367,24 @@ export default function Home() {
       }
     }
 
-    function onTouchStart() {
-      isTouchingRef.current = true
-      if (momentumId) cancelAnimationFrame(momentumId)
-    }
-
-    function onTouchEnd() {
-      isTouchingRef.current = false
-    }
-
-    function onMouseEnter() {
-      isHoveringRef.current = true
-    }
-
-    function onMouseLeave() {
-      isHoveringRef.current = false
-    }
-
     el.addEventListener('pointerdown', onPointerDown)
     el.addEventListener('pointermove', onPointerMove)
     el.addEventListener('pointerup', onPointerUp)
-    el.addEventListener('touchstart', onTouchStart, { passive: true })
-    el.addEventListener('touchend', onTouchEnd)
-    el.addEventListener('mouseenter', onMouseEnter)
-    el.addEventListener('mouseleave', onMouseLeave)
+    el.addEventListener('mouseenter', () => (isHoveringRef.current = true))
+    el.addEventListener('mouseleave', () => (isHoveringRef.current = false))
+    el.addEventListener('touchstart', () => (isTouchingRef.current = true), { passive: true })
+    el.addEventListener('touchend', () => (isTouchingRef.current = false))
     el.addEventListener('dragstart', e => e.preventDefault())
+
+    animationFrameId = requestAnimationFrame(animateScroll)
 
     return () => {
       clearTimers()
-      if (intervalId) clearInterval(intervalId)
       el.removeEventListener('pointerdown', onPointerDown)
       el.removeEventListener('pointermove', onPointerMove)
       el.removeEventListener('pointerup', onPointerUp)
-      el.removeEventListener('touchstart', onTouchStart)
-      el.removeEventListener('touchend', onTouchEnd)
-      el.removeEventListener('mouseenter', onMouseEnter)
-      el.removeEventListener('mouseleave', onMouseLeave)
     }
-  }, [projects, selected])
+  }, [selected])
 
   return (
     <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -773,113 +733,97 @@ export default function Home() {
       </section>
 
       {/* PROJECTS */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-900">
-        <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
-          Projects
-        </h2>
+      <section id = "project" className="py-16 bg-gray-50 dark:bg-gray-900">
+      <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
+        Projects
+      </h2>
 
-        <div
-          ref={scrollRef}
-          className="scroll-container flex gap-4 overflow-x-auto"
-          onMouseEnter={() => setHovering?.(true)}
-          onMouseLeave={() => setHovering?.(false)}
-        >
-          {hovering ? 'Hovering' : 'Not hovering'}
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              data-project-index={index}
-              onClick={() => setSelected(project)}
-              className="min-w-[300px] snap-start rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 cursor-pointer"
+      <div
+        ref={scrollRef}
+        className="scroll-container flex gap-4 overflow-x-auto px-4"
+      >
+        {projects.map((project, index) => (
+          <div
+            key={project.id}
+            data-project-index={index}
+            className="min-w-[300px] snap-start rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 cursor-pointer"
+          >
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-48 object-cover rounded-t-2xl"
+              />
+            ) : (
+              <div className="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-t-2xl flex items-center justify-center text-gray-500 dark:text-gray-300">
+                No Image
+              </div>
+            )}
+            <div className="p-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                {project.title}
+              </h3>
+              <div className="flex flex-wrap gap-1">
+                {project.tech.map(tech => (
+                  <span
+                    key={tech}
+                    className="bg-cyan-100 dark:bg-cyan-800 text-cyan-700 dark:text-cyan-100 text-xs px-2 py-1 rounded"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelected(null)}
+          >
+            <motion.div
+              className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl max-w-lg w-full mx-4 relative"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={e => e.stopPropagation()}
             >
-              {project.image ? (
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute top-3 right-4 text-xl text-gray-400 hover:text-red-500"
+              >
+                ×
+              </button>
+              <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+                {selected.title}
+              </h3>
+              {selected.image ? (
                 <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-48 object-cover rounded-t-2xl"
+                  src={selected.image}
+                  alt={selected.title}
+                  className="rounded-lg mb-4 w-full h-56 object-cover"
                 />
               ) : (
-                <div className="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-t-2xl flex items-center justify-center text-gray-500 dark:text-gray-300">
+                <div className="w-full h-56 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-500 dark:text-gray-300">
                   No Image
                 </div>
               )}
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  {project.title}
-                </h3>
-                <div className="flex flex-wrap gap-1">
-                  {project.tech.map(tech => (
-                    <span
-                      key={tech}
-                      className="bg-cyan-100 dark:bg-cyan-800 text-cyan-700 dark:text-cyan-100 text-xs px-2 py-1 rounded"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <AnimatePresence>
-          {selected && (
-            <motion.div
-              className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelected(null)}
-            >
-              <motion.div
-                className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl max-w-lg w-full mx-4 relative"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                onClick={e => e.stopPropagation()}
-              >
-                <button
-                  onClick={() => setSelected(null)}
-                  className="absolute top-3 right-4 text-xl text-gray-400 hover:text-red-500"
-                >
-                  ×
-                </button>
-                <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
-                  {selected.title}
-                </h3>
-
-                {selected.image ? (
-                  <img
-                    src={selected.image}
-                    alt={selected.title}
-                    className="rounded-lg mb-4 w-full h-56 object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-56 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-500 dark:text-gray-300">
-                    No Image
-                  </div>
-                )}
-
-                <p className="text-gray-700 dark:text-gray-300 mb-4">{selected.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {selected.tech?.map(tech => (
-                    <span
-                      key={tech}
-                      className="bg-cyan-100 dark:bg-cyan-800 text-cyan-700 dark:text-cyan-100 px-3 py-1 text-xs rounded-full"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
+              <p className="text-gray-700 dark:text-gray-300">{selected.description}</p>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </section>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
 
-      {/* CONTACTS */}
-      <section id="contact" className="px-4 py-10 text-center">
+          {/* CONTACTS */}
+          <section id="contact" className="px-4 py-10 text-center">
         <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Contact</h2>
 
         <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-gray-800 dark:text-gray-200">
@@ -902,6 +846,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* FOOTER */}
       <footer className="bg-gray-100 dark:bg-gray-800 py-6 mt-10 text-sm text-gray-700 dark:text-gray-300">
