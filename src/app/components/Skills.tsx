@@ -31,7 +31,7 @@ import {
   SiFastapi,
   SiKubernetes,
 } from 'react-icons/si'
-import { FaDatabase } from "react-icons/fa";
+import { FaDatabase } from 'react-icons/fa'
 import { RiJavaFill } from 'react-icons/ri'
 import { DiVisualstudio } from 'react-icons/di'
 import { VscAzureDevops } from 'react-icons/vsc'
