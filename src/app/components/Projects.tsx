@@ -12,57 +12,57 @@ type Project = {
 
 export default function Projects() {
   const projects: Project[] = [
-    {
-      id: 1,
-      title: 'API Gateway Management',
-      description:
-        'Built a secure and scalable API gateway using Express.js, JWT, and Redis for rate-limiting and session management.',
-      tech: ['Node.js', 'Express.js', 'Redis', 'JWT'],
-      image: '',
-    },
-    {
-      id: 2,
-      title: 'Serverless Task Scheduler',
-      description:
-        'Event-driven backend using AWS Lambda and DynamoDB for asynchronous job scheduling and execution.',
-      tech: ['AWS Lambda', 'DynamoDB', 'SQS', 'CloudWatch'],
-      image: '',
-    },
-    {
-      id: 3,
-      title: 'CI/CD Automation Pipeline',
-      description:
-        'Automated deployment pipeline using GitHub Actions, Docker, and AWS ECS for containerized microservices.',
-      tech: ['GitHub Actions', 'Docker'], // <- closing quote here
-      image: '',
-    },
-    {
-      id: 4,
-      title: 'Headless CMS Integration',
-      description:
-        'Integrated Sanity and GraphQL with a custom backend API to enable flexible content workflows.',
-      tech: ['Go', 'GraphQL', 'Next.js API Routes'],
-      image: '',
-    },
-    {
-      id: 5,
-      title: 'Postgres Query Optimizer',
-      description:
-        'Refactored large query structures and added indexing to reduce response time by 70% on core endpoints.',
-      tech: ['Postgres', 'Knex.js', 'pgAdmin'],
-      image: '',
-    },
-    {
-      id: 6,
-      title: 'Monitoring & Alerting Platform',
-      description:
-        'Built backend logging and alert system using ELK stack and PagerDuty integration.',
-      tech: ['Elasticsearch', 'Logstash', 'Kibana', 'PagerDuty'],
-      image: '',
-    },
-  ]
+  {
+    id: 1,
+    title: 'API Gateway Management',
+    description:
+      'Built a secure and scalable API gateway using Express.js, JWT, and Redis for rate-limiting and session management.',
+    tech: ['Express.js', 'TypeScript', 'Redis', 'JWT Authentication'],
+    image: '/Projects/apigateway.png',
+  },
+  {
+    id: 2,
+    title: 'Task Scheduler',
+    description:
+      'Event-driven backend service for reliable and flexible task scheduling, powered by Hangfire.',
+    tech: ['C#', '.NET Core', 'CQRS', 'Hangfire Jobs'],
+    image: '/Projects/hangfire.png',
+  },
+  {
+    id: 3,
+    title: 'CI/CD Automation Pipeline',
+    description:
+      'Automated delivery pipeline for microservices using Azure DevOps and VM orchestration.',
+    tech: ['Azure DevOps', 'Virtual Machines', 'Continuous Deployment', 'Microservices'],
+    image: '/Projects/azuredevops.png',
+  },
+  {
+    id: 4,
+    title: 'API Integration Platform',
+    description:
+      'Built a flexible platform to enable smooth and reliable API-to-API integration.',
+    tech: ['Go', 'Postgres', 'Next.js API Routes', 'Integration Patterns'],
+    image: '/Projects/nextjs.png',
+  },
+  {
+    id: 5,
+    title: 'SQL Query Optimizer',
+    description:
+      'Enhanced database performance by refactoring large query structures and adding proper indexing, reducing response time by up to 70%.',
+    tech: ['MS SQL Server', '.NET Core', 'SSMS', 'Index Tuning'],
+    image: '/Projects/sqlquery.png',
+  },
+  {
+    id: 6,
+    title: 'Monitoring & Alerting Platform',
+    description:
+      'Built a robust logging and alerting platform using ELK Stack and PagerDuty for real-time incident response.',
+    tech: ['Elasticsearch', 'Logstash', 'Kibana', 'PagerDuty Integration', 'Alerts & Dashboards'],
+    image: '/Projects/elk.png',
+  },
+]
 
-  // Horizontal scroll
+
   const scrollRef = useRef<HTMLDivElement>(null)
   const [selected, setSelected] = useState<Project | null>(null)
   const scrollDirectionRef = useRef<'right' | 'left'>('right')
