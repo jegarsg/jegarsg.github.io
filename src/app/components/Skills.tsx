@@ -102,7 +102,7 @@ const itemVariants = {
 }
 
 function Skills() {
-  const [scrolled, setScrolled] = useState(false)
+  const [, setScrolled] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 0)

@@ -1,6 +1,6 @@
 import React from 'react'
-import Link from 'next/link'
-import { FaGithub, FaLinkedin, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa'
+
+import { FaGithub, FaLinkedin} from 'react-icons/fa'
 
 const Footer = () => {
   return (
