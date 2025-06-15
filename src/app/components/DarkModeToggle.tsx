@@ -18,7 +18,7 @@ const sunIcon = (
       strokeLinecap="round"
       strokeLinejoin="round"
       d="M12 1v2m0 18v2m9-11h-2M5 12H3m15.364 6.364l-1.414-1.414M7.05 7.05L5.636 5.636m12.728 0l-1.414 1.414M7.05 16.95l-1.414 1.414"
-    /> 
+    />
   </svg>
 )
 

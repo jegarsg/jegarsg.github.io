@@ -11,60 +11,59 @@ type Project = {
 }
 
 export default function Projects() {
-
   const projects: Project[] = [
-    {
-      id: 1,
-      title: 'API Gateway Management',
-      description:
-        'Built a secure and scalable API gateway using Express.js, JWT, and Redis for rate-limiting and session management.',
-      tech: ['Node.js', 'Express.js', 'Redis', 'JWT'],
-      image: '',
-    },
-    {
-      id: 2,
-      title: 'Serverless Task Scheduler',
-      description:
-        'Event-driven backend using AWS Lambda and DynamoDB for asynchronous job scheduling and execution.',
-      tech: ['AWS Lambda', 'DynamoDB', 'SQS', 'CloudWatch'],
-      image: '',
-    },
-    {
-      id: 3,
-      title: 'CI/CD Automation Pipeline',
-      description:
-        'Automated deployment pipeline using GitHub Actions, Docker, and AWS ECS for containerized microservices.',
-      tech: ['GitHub Actions', 'Docker'], // <- closing quote here
-      image: '',
-    },
-    {
-      id: 4,
-      title: 'Headless CMS Integration',
-      description:
-        'Integrated Sanity and GraphQL with a custom backend API to enable flexible content workflows.',
-      tech: ['Go', 'GraphQL', 'Next.js API Routes'],
-      image: '',
-    },
-    {
-      id: 5,
-      title: 'Postgres Query Optimizer',
-      description:
-        'Refactored large query structures and added indexing to reduce response time by 70% on core endpoints.',
-      tech: ['Postgres', 'Knex.js', 'pgAdmin'],
-      image: '',
-    },
-    {
-      id: 6,
-      title: 'Monitoring & Alerting Platform',
-      description:
-        'Built backend logging and alert system using ELK stack and PagerDuty integration.',
-      tech: ['Elasticsearch', 'Logstash', 'Kibana', 'PagerDuty'],
-      image: '',
-    },
-  ]
+  {
+    id: 1,
+    title: 'API Gateway Management',
+    description:
+      'Built a secure and scalable API gateway using Express.js, JWT, and Redis for rate-limiting and session management.',
+    tech: ['Express.js', 'TypeScript', 'Redis', 'JWT Authentication'],
+    image: '/Projects/apigateway.png',
+  },
+  {
+    id: 2,
+    title: 'Task Scheduler',
+    description:
+      'Event-driven backend service for reliable and flexible task scheduling, powered by Hangfire.',
+    tech: ['C#', '.NET Core', 'CQRS', 'Hangfire Jobs'],
+    image: '/Projects/hangfire.png',
+  },
+  {
+    id: 3,
+    title: 'CI/CD Automation Pipeline',
+    description:
+      'Automated delivery pipeline for microservices using Azure DevOps and VM orchestration.',
+    tech: ['Azure DevOps', 'Virtual Machines', 'Continuous Deployment', 'Microservices'],
+    image: '/Projects/azuredevops.png',
+  },
+  {
+    id: 4,
+    title: 'API Integration Platform',
+    description:
+      'Built a flexible platform to enable smooth and reliable API-to-API integration.',
+    tech: ['Go', 'Postgres', 'Next.js API Routes', 'Integration Patterns'],
+    image: '/Projects/nextjs.png',
+  },
+  {
+    id: 5,
+    title: 'SQL Query Optimizer',
+    description:
+      'Enhanced database performance by refactoring large query structures and adding proper indexing, reducing response time by up to 70%.',
+    tech: ['MS SQL Server', '.NET Core', 'SSMS', 'Index Tuning'],
+    image: '/Projects/sqlquery.png',
+  },
+  {
+    id: 6,
+    title: 'Monitoring & Alerting Platform',
+    description:
+      'Built a robust logging and alerting platform using ELK Stack and PagerDuty for real-time incident response.',
+    tech: ['Elasticsearch', 'Logstash', 'Kibana', 'PagerDuty Integration', 'Alerts & Dashboards'],
+    image: '/Projects/elk.png',
+  },
+]
 
-  // Horizontal scroll
-   const scrollRef = useRef<HTMLDivElement>(null)
+
+  const scrollRef = useRef<HTMLDivElement>(null)
   const [selected, setSelected] = useState<Project | null>(null)
   const scrollDirectionRef = useRef<'right' | 'left'>('right')
 
@@ -90,15 +89,14 @@ export default function Projects() {
     let lastX = 0
     let lastTimestamp = performance.now()
     const autoScrollSpeed = 0.7
-    
 
     const clearTimers = () => {
       if (animationFrameId) cancelAnimationFrame(animationFrameId)
       if (momentumId) cancelAnimationFrame(momentumId)
-        if (momentumId !== null) {
-          cancelAnimationFrame(momentumId)
-          momentumId = null
-        }
+      if (momentumId !== null) {
+        cancelAnimationFrame(momentumId)
+        momentumId = null
+      }
     }
 
     const animateScroll = () => {
@@ -117,7 +115,8 @@ export default function Projects() {
 
       if (scrollDirectionRef.current === 'right') {
         el.scrollLeft += autoScrollSpeed
-        if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) scrollDirectionRef.current = 'left'
+        if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1)
+          scrollDirectionRef.current = 'left'
       } else {
         el.scrollLeft -= autoScrollSpeed
         if (el.scrollLeft <= 0) scrollDirectionRef.current = 'right'
@@ -205,91 +204,102 @@ export default function Projects() {
     }
   }, [selected, projects])
 
-
   return (
-     <section id="project" className="py-16 bg-gray-50 dark:bg-gray-900">
-  <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
-    Projects
-  </h2>
+    <section id="project" className="py-16 bg-gray-50 dark:bg-gray-900">
+      <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
+        Projects
+      </h2>
 
-  <div className="flex justify-center">
-    <div
-      ref={scrollRef}
-      className="scroll-container flex gap-4 overflow-x-auto px-4 max-w-screen-xl w-full"
-    >
-      {projects.map((project, index) => (
+      <div className="flex justify-center">
         <div
-          key={project.id}
-          data-project-index={index}
-          onClick={() => setSelected(project)} // ✅ Set selected project here
-          className="min-w-[300px] snap-start rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 cursor-pointer"
+          ref={scrollRef}
+          className="scroll-container flex gap-4 overflow-x-auto px-4 max-w-screen-xl w-full"
         >
-          {project.image ? (
-  <Image src={project.image} alt={project.title} width={300} height={200} className="rounded-t-2xl object-cover" />
-) : (
-  <div className="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-t-2xl flex items-center justify-center">
-    No Image
-  </div>
-)}
-          <div className="p-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-              {project.title}
-            </h3>
-            <div className="flex flex-wrap gap-1">
-              {project.tech.map(tech => (
-                <span
-                  key={tech}
-                  className="bg-cyan-100 dark:bg-cyan-800 text-cyan-700 dark:text-cyan-100 text-xs px-2 py-1 rounded"
-                >
-                  {tech}
-                </span>
-              ))}
+          {projects.map((project, index) => (
+            <div
+              key={project.id}
+              data-project-index={index}
+              onClick={() => setSelected(project)} // ✅ Set selected project here
+              className="min-w-[300px] snap-start rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 cursor-pointer"
+            >
+              {project.image ? (
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  width={300}
+                  height={200}
+                  className="rounded-t-2xl object-cover"
+                />
+              ) : (
+                <div className="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-t-2xl flex items-center justify-center">
+                  No Image
+                </div>
+              )}
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {project.title}
+                </h3>
+                <div className="flex flex-wrap gap-1">
+                  {project.tech.map(tech => (
+                    <span
+                      key={tech}
+                      className="bg-cyan-100 dark:bg-cyan-800 text-cyan-700 dark:text-cyan-100 text-xs px-2 py-1 rounded"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
+      </div>
 
-  {/* ✅ Modal using AnimatePresence */}
-  <AnimatePresence>
-    {selected && (
-      <motion.div
-        className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={() => setSelected(null)}
-      >
-        <motion.div
-          className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl max-w-lg w-full mx-4 relative"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          onClick={e => e.stopPropagation()} // ✅ Prevent click bubbling
-        >
-          <button
+      {/* ✅ Modal using AnimatePresence */}
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={() => setSelected(null)}
-            className="absolute top-3 right-4 text-xl text-gray-400 hover:text-red-500"
           >
-            ×
-          </button>
-          <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
-            {selected.title}
-          </h3>
-         {selected.image ? (
-  <Image src={selected.image} alt={selected.title} width={500} height={300} className="rounded-md mb-4" />
-) : (
-  <div className="bg-gray-200 dark:bg-gray-700 rounded-md p-4 text-gray-500">
-    No Image
-  </div>
-)}
-          <p className="text-gray-700 dark:text-gray-300">{selected.description}</p>
-        </motion.div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-</section>
+            <motion.div
+              className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl max-w-lg w-full mx-4 relative"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={e => e.stopPropagation()} // ✅ Prevent click bubbling
+            >
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute top-3 right-4 text-xl text-gray-400 hover:text-red-500"
+              >
+                ×
+              </button>
+              <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+                {selected.title}
+              </h3>
+              {selected.image ? (
+                <Image
+                  src={selected.image}
+                  alt={selected.title}
+                  width={500}
+                  height={300}
+                  className="rounded-md mb-4"
+                />
+              ) : (
+                <div className="bg-gray-200 dark:bg-gray-700 rounded-md p-4 text-gray-500">
+                  No Image
+                </div>
+              )}
+              <p className="text-gray-700 dark:text-gray-300">{selected.description}</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
   )
 }

@@ -5,9 +5,7 @@ import { FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa'
 const Contact = () => {
   return (
     <section id="contact" className="px-4 py-10 text-center">
-      <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-50 mb-6">
-        Contact
-      </h2>
+      <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-50 mb-6">Contact</h2>
 
       {/* Always in a row, with wrap if needed on small screens */}
       <div className="flex flex-row flex-wrap items-center justify-center gap-4">
