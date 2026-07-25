@@ -19,24 +19,22 @@ const Header = () => {
   }, [])
 
   return (
-    <header
-      className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
-        scrolled
-          ? 'bg-white dark:bg-gray-800 shadow-lg'
-          : 'bg-transparent dark:bg-transparent shadow-none'
-      }`}
-    >
-      <nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between md:justify-center relative">
+    <header className="fixed top-0 w-full z-50 flex justify-center transition-all duration-300 px-4">
+      <nav
+        className={`w-full max-w-3xl mt-3 px-4 py-3 flex items-center justify-between rounded-full transition-all duration-300 ${
+          scrolled ? 'glass shadow-lg' : 'bg-transparent border border-transparent'
+        }`}
+      >
         {/* Left: Logo as clickable link */}
         <Link
           href="/"
-          className="text-2xl font-semibold text-gray-900 dark:text-gray-50 absolute left-4 top-1/2 -translate-y-1/2 md:static md:translate-y-0"
+          className="text-xl font-heading font-semibold text-gradient"
         >
           JG
         </Link>
 
         {/* Mobile Right: Dark Mode Toggle + Hamburger menu side by side */}
-        <div className="md:hidden absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-4">
+        <div className="md:hidden flex items-center space-x-3">
           <DarkModeToggle />
           <button
             aria-label="Toggle menu"
@@ -48,29 +46,29 @@ const Header = () => {
         </div>
 
         {/* Desktop navigation */}
-        <ul className="hidden md:flex gap-6 font-semibold items-center ml-auto text-gray-800 dark:text-gray-200">
+        <ul className="hidden md:flex gap-6 text-sm font-semibold items-center text-gray-800 dark:text-gray-200">
           <li>
-            <Link href="#about" className="hover:text-cyan-500">
+            <Link href="#about" className="hover:text-cyan-500 transition-colors">
               About
             </Link>
           </li>
           <li>
-            <Link href="#experience" className="hover:text-cyan-500">
+            <Link href="#experience" className="hover:text-cyan-500 transition-colors">
               Experiences
             </Link>
           </li>
           <li>
-            <Link href="#skills" className="hover:text-cyan-500">
+            <Link href="#skills" className="hover:text-cyan-500 transition-colors">
               Skills
             </Link>
           </li>
           <li>
-            <Link href="#contact" className="hover:text-cyan-500">
+            <Link href="#contact" className="hover:text-cyan-500 transition-colors">
               Contacts
             </Link>
           </li>
           <li>
-            <Link href="#project" className="hover:text-cyan-500">
+            <Link href="#project" className="hover:text-cyan-500 transition-colors">
               Projects
             </Link>
           </li>
@@ -90,7 +88,7 @@ const Header = () => {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-x-0 bottom-6 z-50 flex justify-center pointer-events-none"
           >
-            <div className="pointer-events-auto w-[90%] max-w-sm bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg border border-gray-200 dark:border-gray-700 rounded-3xl shadow-2xl px-6 py-5 grid grid-cols-2 gap-4">
+            <div className="pointer-events-auto w-[90%] max-w-sm glass rounded-3xl shadow-2xl px-6 py-5 grid grid-cols-2 gap-4">
               {[
                 {
                   href: '#about',
@@ -130,7 +128,7 @@ const Header = () => {
                   <Link
                     href={href}
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center justify-center gap-2 py-2 px-4 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-sm text-sm font-semibold text-gray-900 dark:text-gray-50"
+                    className="flex items-center justify-center gap-2 py-2 px-4 bg-white/50 dark:bg-white/5 rounded-xl hover:bg-white/80 dark:hover:bg-white/10 transition-colors shadow-sm text-sm font-semibold text-gray-900 dark:text-gray-50"
                   >
                     {icon}
                     {label}

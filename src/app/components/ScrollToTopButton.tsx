@@ -38,9 +38,9 @@ export default function ScrollToTopButton() {
           whileTap={{ scale: 0.95 }}
           className={`
             fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-xl
-            bg-gray-900 text-white dark:bg-white dark:text-black
-            hover:bg-gray-800 dark:hover:bg-gray-200
-            transition-colors duration-300
+            glass text-gray-900 dark:text-white
+            hover:shadow-glow hover:border-cyan-400/50
+            transition-all duration-300
           `}
           style={{ translateY: 0 }}
         >
