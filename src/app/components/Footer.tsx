@@ -4,7 +4,7 @@ import { FaGithub, FaLinkedin } from 'react-icons/fa'
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 dark:bg-gray-800 py-6 mt-10 text-sm text-gray-700 dark:text-gray-300">
+    <footer className="border-t border-white/30 dark:border-white/10 py-6 mt-10 text-sm text-gray-700 dark:text-gray-300">
       <div className="max-w-screen-xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p className="text-center sm:text-left flex-1 text-gray-700 dark:text-gray-300">
           © {new Date().getFullYear()} <span className="font-semibold">Jegar</span>. Built with{' '}

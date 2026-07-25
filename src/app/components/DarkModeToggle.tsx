@@ -65,7 +65,7 @@ export default function DarkModeToggle() {
     <button
       aria-label="Toggle dark mode"
       onClick={toggleDarkMode}
-      className="cursor-pointer focus:outline-none"
+      className="cursor-pointer focus:outline-none glass rounded-full p-1.5 flex items-center justify-center"
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.div

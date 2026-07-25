@@ -10,6 +10,7 @@ const experiences = {
       title: 'Senior Software Engineer',
       company: 'PT Bank Mandiri Tbk, Jakarta',
       date: 'Jan 2025 – Present',
+      tech: ['Java', 'Spring Boot', 'Oracle', 'ELK Stack', 'Control-M', 'OpenShift (OCP)'],
     },
     {
       title: 'Software Engineer',
@@ -45,72 +46,86 @@ function Experience() {
   const [activeTab, setActiveTab] = useState<'work' | 'education'>('work')
 
   return (
-    <section id="experience" className="py-16 bg-gray-50 dark:bg-gray-900">
+    <section id="experience" className="py-16">
       <div className="max-w-3xl mx-auto px-4">
-        {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8"
+          className="glass rounded-3xl p-6 sm:p-8"
         >
-          <h2 className="text-xl sm:text-3xl font-bold">Experience</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            My journey through work and education
-          </p>
-        </motion.div>
+          {/* Title */}
+          <div className="text-center mb-8">
+            <h2 className="text-xl sm:text-3xl font-heading font-bold">Experience</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              My journey through work and education
+            </p>
+          </div>
 
-        {/* Tabs */}
-        <div className="flex justify-center gap-3 mb-10">
-          {['work', 'education'].map(tab => (
-            <motion.button
-              key={tab}
-              onClick={() => setActiveTab(tab as 'work' | 'education')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-                activeTab === tab
-                  ? 'bg-cyan-500 text-gray-50 border-cyan-500'
-                  : 'bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300 border-gray-300 dark:border-gray-600'
-              }`}
-            >
-              {tab === 'work' ? <FaBriefcase size={12} /> : <FaGraduationCap size={12} />}
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </motion.button>
-          ))}
-        </div>
-
-        {/* Timeline */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 40 }}
-            transition={{ duration: 0.5 }}
-            className="relative border-l border-cyan-400 pl-4"
-          >
-            {experiences[activeTab].map((item, i) => (
-              <motion.div
-                key={i}
-                className="mb-6 relative"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
+          {/* Tabs */}
+          <div className="flex justify-center gap-3 mb-10">
+            {['work', 'education'].map(tab => (
+              <motion.button
+                key={tab}
+                onClick={() => setActiveTab(tab as 'work' | 'education')}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                  activeTab === tab
+                    ? 'bg-cyan-500 text-gray-50 border-cyan-500'
+                    : 'glass text-gray-500 dark:text-gray-300 border-gray-300/50 dark:border-gray-600/50'
+                }`}
               >
-                {/* Dot */}
-                <span className="absolute -left-[10px] top-1 w-3 h-3 bg-cyan-400 rounded-full border-2 border-gray-50 dark:border-gray-900" />
-
-                <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md shadow-md">
-                  <h3 className="text-sm font-semibold">{item.title}</h3>
-                  <p className="text-[11px] text-gray-600 dark:text-gray-300">{item.company}</p>
-                  <p className="text-[10px] text-gray-500 dark:text-gray-400">{item.date}</p>
-                </div>
-              </motion.div>
+                {tab === 'work' ? <FaBriefcase size={12} /> : <FaGraduationCap size={12} />}
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </motion.button>
             ))}
-          </motion.div>
-        </AnimatePresence>
+          </div>
+
+          {/* Timeline */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 40 }}
+              transition={{ duration: 0.5 }}
+              className="relative border-l border-cyan-400 pl-4"
+            >
+              {experiences[activeTab].map((item, i) => (
+                <motion.div
+                  key={i}
+                  className="mb-6 relative"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.08 }}
+                >
+                  {/* Dot */}
+                  <span className="absolute -left-[10px] top-1 w-3 h-3 bg-cyan-400 rounded-full border-2 border-white/60 dark:border-gray-900" />
+
+                  <div className="glass-hover bg-white/40 dark:bg-white/5 p-3 rounded-xl">
+                    <h3 className="text-sm font-semibold">{item.title}</h3>
+                    <p className="text-[11px] text-gray-600 dark:text-gray-300">{item.company}</p>
+                    <p className="text-[10px] text-gray-500 dark:text-gray-400">{item.date}</p>
+                    {'tech' in item && item.tech && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {item.tech.map(tech => (
+                          <span
+                            key={tech}
+                            className="bg-cyan-500/10 dark:bg-cyan-400/10 text-cyan-700 dark:text-cyan-300 text-[10px] px-2 py-0.5 rounded-full"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   )

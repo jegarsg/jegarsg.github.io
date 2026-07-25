@@ -4,6 +4,10 @@ module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-sans)', 'sans-serif'],
+        heading: ['var(--font-heading)', 'sans-serif'],
+      },
       keyframes: {
         fadeIn: {
           '0%': { opacity: 0 },
@@ -18,11 +22,20 @@ module.exports = {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
         },
+        blob: {
+          '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(30px, -40px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.95)' },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 1s ease-in forwards',
         'gradient-move': 'gradient-move 15s ease infinite',
         marquee: 'marquee 30s linear infinite',
+        blob: 'blob 18s infinite ease-in-out',
+      },
+      boxShadow: {
+        glow: '0 0 40px -8px rgba(6, 182, 212, 0.45)',
       },
     },
   },
