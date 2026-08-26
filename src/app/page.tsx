@@ -1,6 +1,8 @@
 'use client'
 import Header from './components/Header'
 import About from './components/About'
+import Services from './components/Services'
+import Process from './components/Process'
 import Experience from './components/Experience'
 import Skills from './components/Skills'
 import GithubActivity from './components/GithubActivity'
@@ -13,6 +15,8 @@ export default function Home() {
     <main className="relative z-10 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <Header />
       <About />
+      <Services />
+      <Process />
       <Experience />
       <Skills />
       <GithubActivity />
