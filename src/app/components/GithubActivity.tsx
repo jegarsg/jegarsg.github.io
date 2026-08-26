@@ -25,13 +25,13 @@ function GithubActivity() {
 
   return (
     <section id="github" className="py-16">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="glass rounded-3xl p-6 sm:p-8"
+          className="card p-6 sm:p-8"
         >
           <div className="flex items-center justify-between mb-2 flex-wrap gap-3">
             <h2 className="text-xl sm:text-2xl font-heading font-bold flex items-center gap-2">
@@ -41,7 +41,7 @@ function GithubActivity() {
               href={`https://github.com/${GITHUB_USERNAME}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-semibold text-cyan-600 dark:text-cyan-400 hover:underline"
+              className="text-xs font-semibold text-accent hover:underline"
             >
               View full profile →
             </Link>
@@ -56,9 +56,9 @@ function GithubActivity() {
           <div className="w-full overflow-x-auto">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`https://ghchart.rshah.org/06b6d4/${GITHUB_USERNAME}`}
+              src={`https://ghchart.rshah.org/10b981/${GITHUB_USERNAME}`}
               alt={`${GITHUB_USERNAME}'s GitHub contribution graph`}
-              className="min-w-[700px] w-full"
+              className="min-w-[700px] w-full opacity-90"
             />
           </div>
         </motion.div>

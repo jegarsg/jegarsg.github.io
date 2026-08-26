@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaNetworkWired, FaRegClock, FaPlug, FaDatabase, FaChartLine } from 'react-icons/fa'
 import { VscAzureDevops } from 'react-icons/vsc'
+import { SiNvidia } from 'react-icons/si'
 import { IconType } from 'react-icons'
 
 type Project = {
@@ -10,7 +11,6 @@ type Project = {
   description: string
   tech: string[]
   icon: IconType
-  gradient: string
 }
 
 export default function Projects() {
@@ -22,7 +22,6 @@ export default function Projects() {
       'Built a secure and scalable API gateway using Express.js, JWT, and Redis for rate-limiting and session management.',
     tech: ['Express.js', 'TypeScript', 'Redis', 'JWT Authentication'],
     icon: FaNetworkWired,
-    gradient: 'from-cyan-500 to-blue-600',
   },
   {
     id: 2,
@@ -31,7 +30,6 @@ export default function Projects() {
       'Event-driven backend service for reliable and flexible task scheduling, powered by Hangfire.',
     tech: ['C#', '.NET Core', 'CQRS', 'Hangfire Jobs'],
     icon: FaRegClock,
-    gradient: 'from-violet-500 to-fuchsia-600',
   },
   {
     id: 3,
@@ -40,7 +38,6 @@ export default function Projects() {
       'Automated delivery pipeline for microservices using Azure DevOps and VM orchestration.',
     tech: ['Azure DevOps', 'Virtual Machines', 'Continuous Deployment', 'Microservices'],
     icon: VscAzureDevops,
-    gradient: 'from-blue-600 to-cyan-500',
   },
   {
     id: 4,
@@ -49,7 +46,6 @@ export default function Projects() {
       'Built a flexible platform to enable smooth and reliable API-to-API integration.',
     tech: ['Go', 'Postgres', 'Next.js API Routes', 'Integration Patterns'],
     icon: FaPlug,
-    gradient: 'from-emerald-500 to-cyan-600',
   },
   {
     id: 5,
@@ -58,7 +54,6 @@ export default function Projects() {
       'Enhanced database performance by refactoring large query structures and adding proper indexing, reducing response time by up to 70%.',
     tech: ['MS SQL Server', '.NET Core', 'SSMS', 'Index Tuning'],
     icon: FaDatabase,
-    gradient: 'from-indigo-600 to-violet-600',
   },
   {
     id: 6,
@@ -67,7 +62,14 @@ export default function Projects() {
       'Built a robust logging and alerting platform using ELK Stack and PagerDuty for real-time incident response.',
     tech: ['Elasticsearch', 'Logstash', 'Kibana', 'PagerDuty Integration', 'Alerts & Dashboards'],
     icon: FaChartLine,
-    gradient: 'from-fuchsia-500 to-rose-600',
+  },
+  {
+    id: 7,
+    title: 'GPU Kernel Optimization (CUDA)',
+    description:
+      'A progression of hand-written CUDA kernels — from naive to shared-memory-tiled matrix multiplication, a simplified FlashAttention, and a paged KV-cache attention kernel — profiled with Nsight Compute on a Tesla T4. Achieved a 956.5x speedup over CPU matmul and a 6.86x KV-cache memory reduction.',
+    tech: ['CUDA C++', 'Triton', 'PyTorch', 'cuBLAS/cuDNN', 'Nsight Compute'],
+    icon: SiNvidia,
   },
 ]
 
@@ -76,82 +78,87 @@ export default function Projects() {
 
   return (
     <section id="project" className="py-16">
-      <h2 className="text-3xl font-heading font-bold text-center mb-10 text-gray-900 dark:text-white">
-        Projects
-      </h2>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl font-heading font-bold mb-10 text-gray-900 dark:text-white">
+          Projects
+        </h2>
 
-      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project, index) => (
-          <motion.div
-            key={project.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.05 * index }}
-            onClick={() => setSelected(project)}
-            className={`glass glass-hover rounded-3xl overflow-hidden cursor-pointer ${
-              index === 0 ? 'lg:col-span-2' : ''
-            }`}
-          >
-            <div
-              className={`w-full h-48 flex items-center justify-center bg-gradient-to-br ${project.gradient} relative overflow-hidden`}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.05 * index }}
+              onClick={() => setSelected(project)}
+              className={`card card-hover overflow-hidden cursor-pointer p-6 flex flex-col ${
+                index === 0 ? 'lg:col-span-2' : ''
+              }`}
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.25),transparent_60%)]" />
-              <project.icon className="w-16 h-16 text-white/90 drop-shadow-lg relative" />
-            </div>
-            <div className="p-5">
+              <project.icon className="w-7 h-7 text-accent mb-6" />
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 {project.title}
               </h3>
-              <div className="flex flex-wrap gap-1">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
+                {project.description}
+              </p>
+              <div className="flex flex-wrap gap-1.5 mt-auto">
                 {project.tech.map(tech => (
                   <span
                     key={tech}
-                    className="bg-cyan-500/10 dark:bg-cyan-400/10 text-cyan-700 dark:text-cyan-300 text-xs px-2 py-1 rounded-full"
+                    className="border border-black/10 dark:border-white/10 text-gray-600 dark:text-gray-300 text-xs px-2 py-1 rounded-full"
                   >
                     {tech}
                   </span>
                 ))}
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       {/* Modal using AnimatePresence */}
       <AnimatePresence>
         {selected && (
           <motion.div
-            className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center"
+            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelected(null)}
           >
             <motion.div
-              className="glass bg-white/90 dark:bg-gray-900/90 p-6 rounded-2xl shadow-2xl max-w-lg w-full mx-4 relative"
-              initial={{ scale: 0.9, opacity: 0 }}
+              className="card bg-white dark:bg-[#0b0c0f] p-6 shadow-2xl max-w-lg w-full relative"
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.25 }}
               onClick={e => e.stopPropagation()}
             >
               <button
                 onClick={() => setSelected(null)}
-                className="absolute top-3 right-4 text-xl text-gray-400 hover:text-red-500"
+                className="absolute top-4 right-5 text-xl text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
               >
                 ×
               </button>
-              <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+              <selected.icon className="w-9 h-9 text-accent mb-4" />
+              <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">
                 {selected.title}
               </h3>
-              <div
-                className={`w-full h-40 rounded-md mb-4 flex items-center justify-center bg-gradient-to-br ${selected.gradient} relative overflow-hidden`}
-              >
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.25),transparent_60%)]" />
-                <selected.icon className="w-14 h-14 text-white/90 drop-shadow-lg relative" />
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                {selected.description}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {selected.tech.map(tech => (
+                  <span
+                    key={tech}
+                    className="border border-black/10 dark:border-white/10 text-gray-600 dark:text-gray-300 text-xs px-2 py-1 rounded-full"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
-              <p className="text-gray-700 dark:text-gray-300">{selected.description}</p>
             </motion.div>
           </motion.div>
         )}

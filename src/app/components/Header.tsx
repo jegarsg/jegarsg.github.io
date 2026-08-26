@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { FaBriefcase, FaEnvelope, FaTools, FaUser, FaLaptopCode } from 'react-icons/fa'
+import { FaBriefcase, FaEnvelope, FaTools, FaUser, FaLaptopCode, FaHandshake } from 'react-icons/fa'
 import { Menu, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import DarkModeToggle from './DarkModeToggle'
@@ -19,18 +19,18 @@ const Header = () => {
   }, [])
 
   return (
-    <header className="fixed top-0 w-full z-50 flex justify-center transition-all duration-300 px-4">
-      <nav
-        className={`w-full max-w-3xl mt-3 px-4 py-3 flex items-center justify-between rounded-full transition-all duration-300 ${
-          scrolled ? 'glass shadow-lg' : 'bg-transparent border border-transparent'
-        }`}
-      >
+    <header
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled ? 'nav-surface' : 'bg-transparent border-b border-transparent'
+      }`}
+    >
+      <nav className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         {/* Left: Logo as clickable link */}
         <Link
           href="/"
-          className="text-xl font-heading font-semibold text-gradient"
+          className="text-lg font-heading font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          JG
+          Jegar<span className="text-accent">.</span>
         </Link>
 
         {/* Mobile Right: Dark Mode Toggle + Hamburger menu side by side */}
@@ -46,30 +46,38 @@ const Header = () => {
         </div>
 
         {/* Desktop navigation */}
-        <ul className="hidden md:flex gap-6 text-sm font-semibold items-center text-gray-800 dark:text-gray-200">
+        <ul className="hidden md:flex gap-8 text-sm font-medium items-center text-gray-600 dark:text-gray-400">
           <li>
-            <Link href="#about" className="hover:text-cyan-500 transition-colors">
+            <Link href="#about" className="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">
               About
             </Link>
           </li>
           <li>
-            <Link href="#experience" className="hover:text-cyan-500 transition-colors">
-              Experiences
+            <Link href="#services" className="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">
+              Services
             </Link>
           </li>
           <li>
-            <Link href="#skills" className="hover:text-cyan-500 transition-colors">
+            <Link href="#experience" className="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">
+              Experience
+            </Link>
+          </li>
+          <li>
+            <Link href="#skills" className="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">
               Skills
             </Link>
           </li>
           <li>
-            <Link href="#contact" className="hover:text-cyan-500 transition-colors">
-              Contacts
+            <Link href="#project" className="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">
+              Projects
             </Link>
           </li>
           <li>
-            <Link href="#project" className="hover:text-cyan-500 transition-colors">
-              Projects
+            <Link
+              href="#contact"
+              className="btn-primary rounded-full px-4 py-1.5 text-sm font-semibold"
+            >
+              Contact
             </Link>
           </li>
           <li>
@@ -88,32 +96,29 @@ const Header = () => {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-x-0 bottom-6 z-50 flex justify-center pointer-events-none"
           >
-            <div className="pointer-events-auto w-[90%] max-w-sm glass rounded-3xl shadow-2xl px-6 py-5 grid grid-cols-2 gap-4">
+            <div className="pointer-events-auto w-[90%] max-w-sm card shadow-2xl px-6 py-5 grid grid-cols-2 gap-3 bg-white/95 dark:bg-black/90 backdrop-blur-xl">
               {[
+                { href: '#about', label: 'About', icon: <FaUser className="w-4 h-4 text-accent" /> },
                 {
-                  href: '#about',
-                  label: 'About',
-                  icon: <FaUser className="text-blue-500 w-5 h-5" />,
+                  href: '#services',
+                  label: 'Services',
+                  icon: <FaHandshake className="w-4 h-4 text-accent" />,
                 },
                 {
                   href: '#experience',
                   label: 'Experience',
-                  icon: <FaBriefcase className="text-green-500 w-5 h-5" />,
+                  icon: <FaBriefcase className="w-4 h-4 text-accent" />,
                 },
-                {
-                  href: '#skills',
-                  label: 'Skills',
-                  icon: <FaTools className="text-yellow-500 w-5 h-5" />,
-                },
+                { href: '#skills', label: 'Skills', icon: <FaTools className="w-4 h-4 text-accent" /> },
                 {
                   href: '#project',
                   label: 'Projects',
-                  icon: <FaLaptopCode className="text-purple-500 w-5 h-5" />,
+                  icon: <FaLaptopCode className="w-4 h-4 text-accent" />,
                 },
                 {
                   href: '#contact',
                   label: 'Contact',
-                  icon: <FaEnvelope className="text-red-500 w-5 h-5" />,
+                  icon: <FaEnvelope className="w-4 h-4 text-accent" />,
                   center: true,
                 },
               ].map(({ href, label, icon, center }) => (
@@ -128,7 +133,7 @@ const Header = () => {
                   <Link
                     href={href}
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center justify-center gap-2 py-2 px-4 bg-white/50 dark:bg-white/5 rounded-xl hover:bg-white/80 dark:hover:bg-white/10 transition-colors shadow-sm text-sm font-semibold text-gray-900 dark:text-gray-50"
+                    className="flex items-center justify-center gap-2 py-2 px-4 rounded-xl border border-black/5 dark:border-white/10 hover:border-emerald-500/40 dark:hover:border-emerald-400/40 transition-colors text-sm font-semibold text-gray-900 dark:text-gray-50"
                   >
                     {icon}
                     {label}

@@ -37,14 +37,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen font-sans">
-        <div
-          aria-hidden
-          className="fixed inset-0 -z-10 overflow-hidden pointer-events-none"
-        >
-          <div className="absolute -top-40 -left-40 w-[28rem] h-[28rem] rounded-full bg-cyan-400/30 dark:bg-cyan-500/20 blur-3xl animate-blob" />
-          <div className="absolute top-1/3 -right-32 w-[26rem] h-[26rem] rounded-full bg-violet-400/30 dark:bg-violet-500/20 blur-3xl animate-blob [animation-delay:6s]" />
-          <div className="absolute bottom-0 left-1/4 w-[24rem] h-[24rem] rounded-full bg-fuchsia-400/20 dark:bg-fuchsia-500/15 blur-3xl animate-blob [animation-delay:12s]" />
+      <body className="bg-[var(--background)] text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen font-sans">
+        <div aria-hidden className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+          <div className="absolute inset-x-0 top-0 h-[640px] bg-grid" />
+          <div className="absolute -top-56 left-1/2 -translate-x-1/2 w-[42rem] h-[42rem] rounded-full bg-emerald-400/20 dark:bg-emerald-500/10 blur-[120px]" />
         </div>
         {children}
         <ScrollToTopButton />

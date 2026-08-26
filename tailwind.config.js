@@ -35,7 +35,7 @@ module.exports = {
         blob: 'blob 18s infinite ease-in-out',
       },
       boxShadow: {
-        glow: '0 0 40px -8px rgba(6, 182, 212, 0.45)',
+        glow: '0 0 40px -8px rgba(16, 185, 129, 0.45)',
       },
     },
   },

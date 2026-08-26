@@ -33,66 +33,94 @@ import {
   SiOracle,
   SiRedhatopenshift,
   SiBmcsoftware,
+  SiNvidia,
+  SiPytorch,
+  SiTensorflow,
+  SiHuggingface,
+  SiOpenai,
+  SiOllama,
+  SiScikitlearn,
+  SiNumpy,
+  SiPandas,
+  SiJupyter,
 } from 'react-icons/si'
 import { FaDatabase } from 'react-icons/fa'
 import { RiJavaFill } from 'react-icons/ri'
 import { DiVisualstudio } from 'react-icons/di'
 import { VscAzureDevops } from 'react-icons/vsc'
 import { FaRust } from 'react-icons/fa6'
+const iconClass =
+  'text-gray-500 dark:text-gray-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors'
+
 const skillSections = [
   {
     title: 'Programming Languages',
     items: [
-      { icon: <SiPython className="text-yellow-500" />, label: 'Python' },
-      { icon: <SiSharp className="text-cyan-600" />, label: 'C#' },
-      { icon: <SiTypescript className="text-blue-400" />, label: 'TypeScript' },
-      { icon: <SiJavascript className="text-yellow-400" />, label: 'JavaScript' },
-      { icon: <SiRust className="text-orange-600" />, label: 'Rust' },
-      { icon: <SiGoland className="text-blue-500" />, label: 'Go' },
-      { icon: <RiJavaFill className="text-blue-500" />, label: 'Java' },
+      { icon: <SiPython className={iconClass} />, label: 'Python' },
+      { icon: <SiSharp className={iconClass} />, label: 'C#' },
+      { icon: <SiTypescript className={iconClass} />, label: 'TypeScript' },
+      { icon: <SiJavascript className={iconClass} />, label: 'JavaScript' },
+      { icon: <SiRust className={iconClass} />, label: 'Rust' },
+      { icon: <SiGoland className={iconClass} />, label: 'Go' },
+      { icon: <RiJavaFill className={iconClass} />, label: 'Java' },
     ],
   },
   {
     title: 'Frameworks',
     items: [
-      { icon: <SiNestjs className="text-red-500" />, label: 'NestJS' },
-      { icon: <SiNextdotjs className="text-black dark:text-white" />, label: 'Next.js' },
-      { icon: <SiNodedotjs className="text-green-600" />, label: 'Node.js' },
-      { icon: <SiAngular className="text-red-600" />, label: 'Angular JS' },
-      { icon: <SiGin className="text-green-700" />, label: 'Gin' },
-      { icon: <SiDotnet className="text-purple-500" />, label: '.NET Core' },
-      { icon: <SiSpringboot className="text-purple-500" />, label: 'Springboot' },
-      { icon: <SiFastapi className="text-purple-500" />, label: 'FastApi' },
-      { icon: <FaRust className="text-purple-500" />, label: 'Axum' },
+      { icon: <SiNestjs className={iconClass} />, label: 'NestJS' },
+      { icon: <SiNextdotjs className={iconClass} />, label: 'Next.js' },
+      { icon: <SiNodedotjs className={iconClass} />, label: 'Node.js' },
+      { icon: <SiAngular className={iconClass} />, label: 'Angular JS' },
+      { icon: <SiGin className={iconClass} />, label: 'Gin' },
+      { icon: <SiDotnet className={iconClass} />, label: '.NET Core' },
+      { icon: <SiSpringboot className={iconClass} />, label: 'Springboot' },
+      { icon: <SiFastapi className={iconClass} />, label: 'FastApi' },
+      { icon: <FaRust className={iconClass} />, label: 'Axum' },
+    ],
+  },
+  {
+    title: 'AI & Machine Learning',
+    items: [
+      { icon: <SiNvidia className={iconClass} />, label: 'CUDA' },
+      { icon: <SiPytorch className={iconClass} />, label: 'PyTorch' },
+      { icon: <SiTensorflow className={iconClass} />, label: 'TensorFlow' },
+      { icon: <SiHuggingface className={iconClass} />, label: 'Hugging Face' },
+      { icon: <SiOpenai className={iconClass} />, label: 'OpenAI API' },
+      { icon: <SiOllama className={iconClass} />, label: 'Ollama' },
+      { icon: <SiScikitlearn className={iconClass} />, label: 'scikit-learn' },
+      { icon: <SiNumpy className={iconClass} />, label: 'NumPy' },
+      { icon: <SiPandas className={iconClass} />, label: 'Pandas' },
+      { icon: <SiJupyter className={iconClass} />, label: 'Jupyter' },
     ],
   },
   {
     title: 'Databases',
     items: [
-      { icon: <SiPostgresql className="text-indigo-600" />, label: 'PostgreSQL' },
-      { icon: <SiMongodb className="text-green-600" />, label: 'MongoDB' },
-      { icon: <FaDatabase className="text-blue-600" />, label: 'MS SQL Server' },
-      { icon: <SiOracle className="text-red-600" />, label: 'Oracle' },
-      { icon: <SiRedis className="text-red-500" />, label: 'Redis' },
+      { icon: <SiPostgresql className={iconClass} />, label: 'PostgreSQL' },
+      { icon: <SiMongodb className={iconClass} />, label: 'MongoDB' },
+      { icon: <FaDatabase className={iconClass} />, label: 'MS SQL Server' },
+      { icon: <SiOracle className={iconClass} />, label: 'Oracle' },
+      { icon: <SiRedis className={iconClass} />, label: 'Redis' },
     ],
   },
   {
     title: 'Tools & Platforms',
     items: [
-      { icon: <SiDocker className="text-blue-700" />, label: 'Docker' },
-      { icon: <SiApachekafka className="text-black" />, label: 'Kafka' },
-      { icon: <SiJenkins className="text-red-700" />, label: 'Jenkins' },
-      { icon: <SiGithubactions className="text-gray-800" />, label: 'GitHub Actions' },
-      { icon: <SiElastic className="text-yellow-700" />, label: 'ELK Stack' },
-      { icon: <SiKubernetes className="text-blue-600" />, label: 'Kubernetes' },
-      { icon: <SiRedhatopenshift className="text-red-700" />, label: 'OpenShift (OCP)' },
-      { icon: <SiBmcsoftware className="text-orange-600" />, label: 'Control-M' },
-      { icon: <SiBitbucket className="text-blue-700" />, label: 'Bitbucket' },
-      { icon: <SiJira className="text-blue-500" />, label: 'Jira' },
-      { icon: <DiVisualstudio className="text-indigo-600" />, label: 'VSCode' },
-      { icon: <SiJetbrains className="text-pink-600" />, label: 'JetBrains' },
-      { icon: <VscAzureDevops className="text-blue-500" />, label: 'Azure' },
-      { icon: <FaAws className="text-orange-500" />, label: 'AWS' },
+      { icon: <SiDocker className={iconClass} />, label: 'Docker' },
+      { icon: <SiApachekafka className={iconClass} />, label: 'Kafka' },
+      { icon: <SiJenkins className={iconClass} />, label: 'Jenkins' },
+      { icon: <SiGithubactions className={iconClass} />, label: 'GitHub Actions' },
+      { icon: <SiElastic className={iconClass} />, label: 'ELK Stack' },
+      { icon: <SiKubernetes className={iconClass} />, label: 'Kubernetes' },
+      { icon: <SiRedhatopenshift className={iconClass} />, label: 'OpenShift (OCP)' },
+      { icon: <SiBmcsoftware className={iconClass} />, label: 'Control-M' },
+      { icon: <SiBitbucket className={iconClass} />, label: 'Bitbucket' },
+      { icon: <SiJira className={iconClass} />, label: 'Jira' },
+      { icon: <DiVisualstudio className={iconClass} />, label: 'VSCode' },
+      { icon: <SiJetbrains className={iconClass} />, label: 'JetBrains' },
+      { icon: <VscAzureDevops className={iconClass} />, label: 'Azure' },
+      { icon: <FaAws className={iconClass} />, label: 'AWS' },
     ],
   },
 ]
@@ -120,9 +148,9 @@ function Skills() {
 
   return (
     <section id="skills" className="py-16">
-      <div className="max-w-6xl mx-auto px-4 text-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <motion.h2
-          className="text-3xl font-heading font-semibold tracking-tight mb-2"
+          className="text-3xl font-heading font-bold tracking-tight mb-2"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -135,7 +163,7 @@ function Skills() {
           Technologies I use frequently
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {skillSections.map((section, idx) => (
             <motion.div
               key={idx}
@@ -143,14 +171,14 @@ function Skills() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 * idx }}
-              className={`glass rounded-3xl p-6 text-left ${spanClasses[idx % spanClasses.length]}`}
+              className={`card p-6 text-left ${spanClasses[idx % spanClasses.length]}`}
             >
-              <h3 className="text-base sm:text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
                 {section.title}
               </h3>
 
               <motion.div
-                className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4"
+                className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3"
                 variants={containerVariants}
                 initial="hidden"
                 whileInView="show"
@@ -160,21 +188,12 @@ function Skills() {
                   <motion.div
                     key={i}
                     variants={itemVariants}
-                    whileHover={{
-                      scale: 1.1,
-                      y: -6,
-                      boxShadow: '0 10px 20px rgb(6, 182, 212, 0.4)',
-                    }}
-                    whileTap={{
-                      scale: 0.95,
-                      filter: 'brightness(1.1) drop-shadow(0 0 8px rgb(6, 182, 212, 0.5)',
-                      transition: { duration: 0.3, ease: 'easeOut' },
-                    }}
+                    whileHover={{ y: -3 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    className="glass-hover bg-white/40 dark:bg-white/5 px-3 py-4 rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300"
+                    className="group border border-black/[0.06] dark:border-white/[0.08] hover:border-emerald-500/40 dark:hover:border-emerald-400/30 px-3 py-4 rounded-xl flex flex-col items-center justify-center cursor-default transition-colors duration-300"
                   >
-                    <div className="text-3xl mb-2">{item.icon}</div>
-                    <span className="text-xs text-gray-700 dark:text-gray-100 text-center">
+                    <div className="text-2xl mb-2">{item.icon}</div>
+                    <span className="text-[11px] text-gray-600 dark:text-gray-300 text-center">
                       {item.label}
                     </span>
                   </motion.div>
